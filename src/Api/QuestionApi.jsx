@@ -6,7 +6,7 @@ const API_URL = import.meta.env.VITE_TEST_API_URL
 export const CreateQuestionApi = async (questionData) => {
     try {
         const formData = new FormData();
-        formData.append("text", questionData.text  || "");
+        formData.append("text", questionData.text || "");
         if (questionData.image) {
             formData.append('image', questionData.image);
         }
@@ -48,8 +48,16 @@ export const CreateQuestionApi = async (questionData) => {
 };
 
 export const GetAllQuestionApi = async () => {
-    const response = await axiosInstance.get(`${API_URL}/questions`);
-    return response.data;
+    try {
+        const response = await axiosInstance.get(`${API_URL}/questions`);
+        return response.data;
+    } catch (error) {
+        if (error.response && error.response.status === 400) {
+            console.warn("Savollar mavjud emas (400 xato, lekin bu normal holat).");
+            return [];
+        }
+        throw error;
+    }
 };
 export const DeleteQuestionApi = async (questionId) => {
     const response = await axiosInstance.delete(

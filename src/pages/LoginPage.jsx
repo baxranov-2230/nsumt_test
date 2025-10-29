@@ -66,14 +66,12 @@ export default function LoginPage() {
                 className="bg-white rounded-lg shadow-lg w-full max-w-6xl h-[80%] md:h-[80%] flex flex-col md:flex-row overflow-hidden">
                 {/* Chap qism */}
                 <div className="md:w-1/2 bg-blue-600 text-white p-8 flex flex-col justify-center">
-                    <h2 className="text-3xl font-bold mb-4">Grantga ariza topshirish</h2>
+                    <h2 className="text-3xl font-bold mb-4">Talabalar bilimini baholash</h2>
                     <p className="text-lg">
-                        Ushbu platforma orqali talabalar grant uchun ariza topshirishi
-                        mumkin. Natijalarni profil orqali kuzating.
+                        Ushbu platforma orqali talabalar topshirgan test natijalarini kuzatib borishi mumin.
                     </p>
                     <ul className="mt-6 list-disc pl-5 text-blue-100 text-sm space-y-2">
-                        <li>Profil orqali ariza topshiring</li>
-                        {/*<li>PDF hujjatlarni biriktiring</li>*/}
+                        <li>Profil orqali baholarni kuzatib boring</li>
                         <li>Holatni tekshirib boring</li>
                     </ul>
                 </div>
