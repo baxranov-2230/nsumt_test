@@ -54,6 +54,18 @@ function Sidebar({isOpen}) {
                     {icon: BsBuildingX , label: "Savollar ro'yxati", path: "/list-question"},
                 ],
             },
+            {
+                id: "teacher",
+                items: [
+                    {icon: BsBuildingX , label: "O'qituvchilar", path: "/list-teacher"},
+                ],
+            },
+             {
+                id: "subject",
+                items: [
+                    {icon: BsBuildingX , label: "Fanlar", path: "/list-subject"},
+                ],
+            },
             // {
             //     id: "study_direction",
             //     items: [

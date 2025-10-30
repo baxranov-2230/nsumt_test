@@ -20,12 +20,16 @@ const isTokenExpired = (token) => {
 
 axiosOrganization.interceptors.request.use((config) => {
     const token = JSON.parse(localStorage.getItem("token"));
+    console.log(token);
     if (token?.access_token) {
-        if (isTokenExpired(token.access_token)) {
+        if (isTokenExpired(token?.access_token)) {
             localStorage.removeItem("token");
-            window.location.href = "/login"; // Router Navigate emas, axios interceptor ichida router ishlamaydi
-        } else {
-            config.headers.Authorization = `Bearer ${token.access_token}`;
+            window.location.href = "/login";
+        }
+        else {
+            // config.headers.Authorization = `ApiKey ${token.access_token}`;
+            // config.headers["X-API-KEY"] = token.access_token;
+            config.headers.Authorization = token.access_token;
         }
     }
     return config;

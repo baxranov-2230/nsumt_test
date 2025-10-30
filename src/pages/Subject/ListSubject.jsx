@@ -1,42 +1,39 @@
 import React, { useState } from "react";
 import { useQuery, useMutation } from "@tanstack/react-query";
-// import {DeleteCategory, GetAllCategory} from "../../Api/CategoryApi.jsx";
+
 import toast from "react-hot-toast";
 import { Link } from "react-router-dom";
 import { FaRegEdit } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
 
-import {
-  DeleteQuestionApi,
-  GetAllQuestionApi,
-} from "../../Api/QuestionApi.jsx";
+import { DeleteSubjectApi, GetAllSubjectApi } from "../../Api/SubjectApi";
 
-function ListQuestion() {
+function ListSubject() {
   const [isModalOpen, setIsModalOpen] = useState(null);
   const { isError, isSuccess, isLoading, data, error, refetch } = useQuery({
-    queryKey: ["list-question"],
-    queryFn: GetAllQuestionApi,
+    queryKey: ["list-subject"],
+    queryFn: GetAllSubjectApi,
   });
 
-  const questionMutation = useMutation({
-    mutationKey: ["delete-question"],
-    mutationFn: DeleteQuestionApi,
+  const subjectMutation = useMutation({
+    mutationKey: ["subject-delete"],
+    mutationFn: DeleteSubjectApi,
     onSuccess: (data) => {
-      toast.success(data.message || "Savol muvaffaqiyatli o'chirildi");
-      window.location.reload();
+      toast.success(data.message || "Fan muvaffaqiyatli o'chirildi");
+      setIsModalOpen(null);
     },
     onError: (error) => {
       toast.error(error.message || "Xatolik yuz berdi");
     },
   });
 
-  const handleDeleteClick = (questionId) => {
-    setIsModalOpen(questionId); // Modalni ochish
+  const handleDeleteClick = (subjectId) => {
+    setIsModalOpen(subjectId); // Modalni ochish
   };
 
-  const deleteHandler = async (questionId) => {
-    questionMutation
-      .mutateAsync(questionId)
+  const deleteHandler = async (subjectId) => {
+    subjectMutation
+      .mutateAsync(subjectId)
       .then(() => {
         refetch();
       })
@@ -49,9 +46,9 @@ function ListQuestion() {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h2 className="text-2xl font-bold text-gray-800">Savollar</h2>
-        <Link to="/create-question" className="btn btn-primary">
-          Savol qo'shish
+        <h2 className="text-2xl font-bold text-gray-800">Fanlar</h2>
+        <Link to="/create-subject" className="btn btn-primary">
+          Yangi fan qo'shish
         </Link>
       </div>
 
@@ -60,39 +57,37 @@ function ListQuestion() {
           <table className="w-full">
             <thead>
               <tr className="text-left bg-gray-50">
-                <th className="p-3 text-gray-600">№</th>
-                <th className="p-3 text-gray-600"> Savol</th>
-                <th className="p-3 text-gray-600">Fan</th>
-                {/*<th className="p-3 text-gray-600">Kategoriya ru</th>*/}
-                <th className="p-3 text-gray-600 text-center">Action</th>
+                <th className="p-3 text-gray-600">N</th>
+                <th className="p-3 text-gray-600">Fan nomi</th>
+
+                <th className="p-3 text-gray-600 flex justify-center ">
+                  Action
+                </th>
               </tr>
             </thead>
             <tbody>
-              {data?.map((question, index) => {
+              {data?.map((fan, index) => {
                 return (
-                  <tr className="border-t" key={question?.id}>
+                  <tr className="border-t" key={fan?.id}>
                     <td className="p-3 ">{index + 1}</td>
-                    <td className="p-3 ">{question?.text}</td>
-                    <td className="p-3">{question?.subject_id}</td>
-                    {/*<td className="p-3">{category?.category_name_en}</td>*/}
+                    <td className="p-3 ">{fan?.name}</td>
                     <td className="p-3">
                       <div className="flex justify-center">
-                        {/* <Link
+                        <Link
                           className=" flex items-center justify-start   pr-8"
-                          to={`/update-subject/${employee?.id}`}
+                          to={`/update-subject/${fan?.id}`}
                         >
                           <button>
                             <FaRegEdit className="text-2xl text-[#3697A5]" />
                           </button>
-                        </Link> */}
+                        </Link>
                         <button
                           className="flex items-center justify-start  "
-                          // onClick={() => deleteHandler(faculty?.id)}
-                          onClick={() => handleDeleteClick(question?.id)}
+                          onClick={() => handleDeleteClick(fan?.id)}
                         >
                           <MdDelete className="text-2xl text-red-600" />
                         </button>
-                        {isModalOpen === question?.id && (
+                        {isModalOpen === fan?.id && (
                           <div className="fixed inset-0 flex items-center justify-center bg-gray-500/50">
                             <div className="bg-white p-6 rounded-lg shadow-lg">
                               <h2 className="text-lg font-semibold mb-4">
@@ -100,7 +95,7 @@ function ListQuestion() {
                               </h2>
                               <p className="mb-6">
                                 <span className="text-red-600">
-                                  {question?.text || "Bu element"}
+                                  {fan?.name || "Bu element"}
                                 </span>{" "}
                                 ni o‘chirishni tasdiqlaysizmi?
                               </p>
@@ -113,7 +108,7 @@ function ListQuestion() {
                                 </button>
                                 <button
                                   className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700"
-                                  onClick={() => deleteHandler(question?.id)}
+                                  onClick={() => deleteHandler(fan?.id)}
                                 >
                                   O‘chirish
                                 </button>
@@ -134,4 +129,4 @@ function ListQuestion() {
   );
 }
 
-export default ListQuestion;
+export default ListSubject;

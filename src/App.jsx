@@ -26,10 +26,13 @@ import Dashboard from "./pages/Dashboard";
 import LoginPage from "./pages/LoginPage.jsx";
 import { useQuery } from "@tanstack/react-query";
 
-import ListEmployee from "./pages/Employee/ListEmployee.jsx";
-import CreateEmployee from "./pages/Employee/CreateEmployee.jsx";
 import ListQuestion from "./pages/Quetion/ListQuestion.jsx";
 import CreateQuestion from "./pages/Quetion/CreateQuestion.jsx";
+import RegisterTeacher from "./pages/Teacher/RegisterTeacher.jsx";
+import ListTeacher from "./pages/Teacher/ListTeacher.jsx";
+import CreateSubject from "./pages/Subject/CreateSubject.jsx";
+import ListSubject from "./pages/Subject/ListSubject.jsx";
+import UpdateSubject from "./pages/Subject/UpdateSubject.jsx";
 
 function ProtectedRoute({ children }) {
   const token = JSON.parse(localStorage.getItem("token"));
@@ -171,6 +174,22 @@ function App() {
 
             <Route path="/dashboard" element={<Dashboard />} />
             <Route
+              path="/register-teacher"
+              element={
+                <ProtectedRoute>
+                  <RegisterTeacher />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/list-teacher"
+              element={
+                <ProtectedRoute>
+                  <ListTeacher />
+                </ProtectedRoute>
+              }
+            />
+            <Route
               path="/list-question"
               element={
                 <ProtectedRoute>
@@ -188,11 +207,36 @@ function App() {
             {/*        </ProtectedRoute>*/}
             {/*    }*/}
             {/*/>*/}
+
             <Route
               path="/create-question"
               element={
                 <ProtectedRoute>
                   <CreateQuestion />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/create-subject"
+              element={
+                <ProtectedRoute>
+                  <CreateSubject />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/list-subject"
+              element={
+                <ProtectedRoute>
+                  <ListSubject />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/update-subject/:subjectId"
+              element={
+                <ProtectedRoute>
+                  <UpdateSubject />
                 </ProtectedRoute>
               }
             />
