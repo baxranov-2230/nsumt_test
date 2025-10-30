@@ -1,41 +1,43 @@
-import React, {useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import {
     BrowserRouter as Router,
     Routes,
     Route,
     useLocation, useNavigate, Navigate, Link,
 } from "react-router-dom";
-import {Menu as MenuIcon, Bell} from "lucide-react";
-import {jwtDecode} from "jwt-decode";
+import { Menu as MenuIcon, Bell } from "lucide-react";
+import { jwtDecode } from "jwt-decode";
 
-import {Toaster} from "react-hot-toast";
+import { Toaster } from "react-hot-toast";
 
 
 import Button from "@mui/material/Button";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import Fade from "@mui/material/Fade";
-import {IoIosPerson} from "react-icons/io";
-import {LuLogOut} from "react-icons/lu";
+import { IoIosPerson } from "react-icons/io";
+import { LuLogOut } from "react-icons/lu";
 import HemisLogo from "./components/HemisLogo";
 import Sidebar from "./components/Sidebar";
 import Dashboard from "./pages/Dashboard";
 
 import LoginPage from "./pages/LoginPage.jsx";
-import {useQuery} from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 
 
-import ListEmployee from "./pages/Employee/ListEmployee.jsx";
-import CreateEmployee from "./pages/Employee/CreateEmployee.jsx";
 import ListQuestion from "./pages/Quetion/ListQuestion.jsx";
 import CreateQuestion from "./pages/Quetion/CreateQuestion.jsx";
+import RegisterTeacher from "./pages/Teacher/RegisterTeacher.jsx"
+import ListTeacher from "./pages/Teacher/ListTeacher.jsx"
+import CreateSubject from "./pages/Subject/CreateSubject.jsx";
+import ListSubject from "./pages/Subject/ListSubject.jsx";
 
 
-function ProtectedRoute({children}) {
+function ProtectedRoute({ children }) {
     const token = JSON.parse(localStorage.getItem("token"));
     const location = useLocation();
     if (!token) {
-        return <Navigate to="/login" state={{from: location}} replace/>;
+        return <Navigate to="/login" state={{ from: location }} replace />;
     }
     return children;
 }
@@ -81,21 +83,20 @@ function App() {
     };
     const handleLogout = async () => {
         localStorage.removeItem("token");
-        return <Navigate to="/login" state={{from: location}} replace/>;
+        return <Navigate to="/login" state={{ from: location }} replace />;
     };
     return (
         <div className="min-h-screen bg-[#F5F5F9] ">
             <div
                 className={` ${isPublicPage ? "pt-8" : ""}`}>
                 {isPublicPage &&
-                    <Sidebar isOpen={isSidebarOpen}/>}
-                <header className={`bg-white px-6 mx-6 transition-all duration-300  text-black sticky top-0   z-10 ${
-                    isPublicPage && isSidebarOpen
-                        ? "sm:ml-72"
-                        : isPublicPage
-                            ? "sm:ml-28"
-                            : "hidden"
-                }`}
+                    <Sidebar isOpen={isSidebarOpen} />}
+                <header className={`bg-white px-6 mx-6 transition-all duration-300  text-black sticky top-0   z-10 ${isPublicPage && isSidebarOpen
+                    ? "sm:ml-72"
+                    : isPublicPage
+                        ? "sm:ml-28"
+                        : "hidden"
+                    }`}
                 >
 
                     <div className="w flex  items-center justify-between  h-16">
@@ -104,11 +105,11 @@ function App() {
                                 className="h-6 w-6 cursor-pointer"
                                 onClick={() => setIsSidebarOpen(!isSidebarOpen)}
                             />
-                            <HemisLogo className="h-8"/>
+                            <HemisLogo className="h-8" />
                         </div>
                         <div className="flex items-center space-x-6 mr-10">
 
-                            <Bell className="h-5 w-5 cursor-pointer"/>
+                            <Bell className="h-5 w-5 cursor-pointer" />
                             <div>
                                 <Button
                                     id="fade-button"
@@ -136,8 +137,8 @@ function App() {
                                 >
                                     <MenuItem onClick={handleClose}>
                                         <IoIosPerson
-                                            className="mr-2 text-2xl text-white bg-amber-300 rounded-full p-1"/> <Link
-                                        to="/profile">Profile</Link>
+                                            className="mr-2 text-2xl text-white bg-amber-300 rounded-full p-1" /> <Link
+                                                to="/profile">Profile</Link>
                                     </MenuItem>
                                     {/*<MenuItem onClick={handleClose}>My account</MenuItem>*/}
                                     <MenuItem
@@ -147,7 +148,7 @@ function App() {
                                         }}
                                     >
                                         <LuLogOut
-                                            className="mr-2 font-bold text-white text-2xl bg-red-500 rounded-full p-1"/> Logout
+                                            className="mr-2 font-bold text-white text-2xl bg-red-500 rounded-full p-1" /> Logout
                                     </MenuItem>
                                 </Menu>
                             </div>
@@ -156,26 +157,41 @@ function App() {
 
                 </header>
                 <main
-                    className={` p-6  transition-all duration-300 ${
-                        isPublicPage && isSidebarOpen
-                            ? "sm:ml-64"
-                            : isPublicPage
-                                ? "sm:ml-20"
-                                : ""
-                    }`}
+                    className={` p-6  transition-all duration-300 ${isPublicPage && isSidebarOpen
+                        ? "sm:ml-64"
+                        : isPublicPage
+                            ? "sm:ml-20"
+                            : ""
+                        }`}
                 >
 
                     <Routes>
-                        <Route path="/" element={<LoginPage/>}/>
-                        <Route path="/login" element={<LoginPage/>}/>
+                        <Route path="/" element={<LoginPage />} />
+                        <Route path="/login" element={<LoginPage />} />
 
 
-                        <Route path="/dashboard" element={<Dashboard/>}/>
+                        <Route path="/dashboard" element={<Dashboard />} />
+                        <Route
+                            path="/register-teacher"
+                            element={
+                                <ProtectedRoute>
+                                    <RegisterTeacher />
+                                </ProtectedRoute>
+                            }
+                        />
+                        <Route
+                            path="/list-teacher"
+                            element={
+                                <ProtectedRoute>
+                                    <ListTeacher />
+                                </ProtectedRoute>
+                            }
+                        />
                         <Route
                             path="/list-question"
                             element={
                                 <ProtectedRoute>
-                                    <ListQuestion/>
+                                    <ListQuestion />
                                 </ProtectedRoute>
                             }
                         />
@@ -189,22 +205,41 @@ function App() {
                         {/*        </ProtectedRoute>*/}
                         {/*    }*/}
                         {/*/>*/}
+
+                        <Route
+                            path="/create-subject"
+
+                            element={
+                                <ProtectedRoute>
+                                    <CreateSubject />
+                                </ProtectedRoute>
+                            }
+                        />
                         <Route
                             path="/create-question"
 
                             element={
                                 <ProtectedRoute>
-                                    <CreateQuestion/>
+                                    <CreateQuestion />
+                                </ProtectedRoute>
+                            }
+                        />
+                         <Route
+                            path="/list-subject"
+                            element={
+                                <ProtectedRoute>
+                                    <ListSubject />
                                 </ProtectedRoute>
                             }
                         />
 
 
-                        <Route path="*" element={<div>404 - Sahifa topilmadi</div>}/>
+
+                        <Route path="*" element={<div>404 - Sahifa topilmadi</div>} />
 
 
                     </Routes>
-                    <Toaster/>
+                    <Toaster />
                 </main>
             </div>
         </div>
