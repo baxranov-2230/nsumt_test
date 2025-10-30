@@ -1,5 +1,5 @@
 import axios from "axios";
-import {jwtDecode} from "jwt-decode";
+import { jwtDecode } from "jwt-decode";
 
 const API_URL = import.meta.env.VITE_TEST_API_URL;
 
@@ -29,7 +29,7 @@ axiosTest.interceptors.request.use((config) => {
         else {
             // config.headers.Authorization = `ApiKey ${token.access_token}`;
             // config.headers["X-API-KEY"] = token.access_token;
-            config.headers.Authorization  = token.access_token;
+            config.headers.Authorization = token.access_token;
         }
     }
     return config;
