@@ -33,6 +33,7 @@ import ListTeacher from "./pages/Teacher/ListTeacher.jsx";
 import CreateSubject from "./pages/Subject/CreateSubject.jsx";
 import ListSubject from "./pages/Subject/ListSubject.jsx";
 import UpdateSubject from "./pages/Subject/UpdateSubject.jsx";
+import CreateTeacher from "./pages/Teacher/CreateTeacher.jsx";
 
 function ProtectedRoute({ children }) {
   const token = JSON.parse(localStorage.getItem("token"));
@@ -49,7 +50,7 @@ function App() {
   const location = useLocation(); // Get current route location
   const isLoginPage =
     location.pathname === "/login" || location.pathname === "/";
-  const isRegisterPage = location.pathname === "/register";
+  // const isRegisterPage = location.pathname === "/register";
   const isVerifySMSPage = location.pathname === "/verify-sms";
   const isPassportPage = location.pathname === "/passport";
   const isForgetPassword = location.pathname === "/forget-password";
@@ -58,7 +59,7 @@ function App() {
 
   const isPublicPage = !(
     isLoginPage ||
-    isRegisterPage ||
+    // isRegisterPage ||
     isVerifySMSPage ||
     isPassportPage ||
     isForgetPassword ||
@@ -98,13 +99,12 @@ function App() {
       <div className={` ${isPublicPage ? "pt-8" : ""}`}>
         {isPublicPage && <Sidebar isOpen={isSidebarOpen} />}
         <header
-          className={`bg-white px-6 mx-6 transition-all duration-300  text-black sticky top-0   z-10 ${
-            isPublicPage && isSidebarOpen
-              ? "sm:ml-72"
-              : isPublicPage
+          className={`bg-white px-6 mx-6 transition-all duration-300  text-black sticky top-0   z-10 ${isPublicPage && isSidebarOpen
+            ? "sm:ml-72"
+            : isPublicPage
               ? "sm:ml-28"
               : "hidden"
-          }`}
+            }`}
         >
           <div className="w flex  items-center justify-between  h-16">
             <div className="flex items-center space-x-4">
@@ -160,13 +160,12 @@ function App() {
           </div>
         </header>
         <main
-          className={` p-6  transition-all duration-300 ${
-            isPublicPage && isSidebarOpen
-              ? "sm:ml-64"
-              : isPublicPage
+          className={` p-6  transition-all duration-300 ${isPublicPage && isSidebarOpen
+            ? "sm:ml-64"
+            : isPublicPage
               ? "sm:ml-20"
               : ""
-          }`}
+            }`}
         >
           <Routes>
             <Route path="/" element={<LoginPage />} />
@@ -197,17 +196,6 @@ function App() {
                 </ProtectedRoute>
               }
             />
-
-            {/*<Route*/}
-            {/*    path="/list-employee"*/}
-
-            {/*    element={*/}
-            {/*        <ProtectedRoute>*/}
-            {/*            <ListEmployee/>*/}
-            {/*        </ProtectedRoute>*/}
-            {/*    }*/}
-            {/*/>*/}
-
             <Route
               path="/create-question"
               element={
@@ -237,6 +225,15 @@ function App() {
               element={
                 <ProtectedRoute>
                   <UpdateSubject />
+                </ProtectedRoute>
+              }
+            />
+
+            <Route
+              path="/register"
+              element={
+                <ProtectedRoute>
+                  <CreateTeacher />
                 </ProtectedRoute>
               }
             />

@@ -3,14 +3,21 @@ import React, { useEffect, useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import toast from "react-hot-toast";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
-import { DeleteTeacherApi, GetAllTeacher } from "../../Api/TeacherApi";
+import { DeleteUserApi, GetAllTeacher } from "../../Api/TeacherApi";
 import { MdDelete } from "react-icons/md";
 
 function ListTeacher() {
   const [isModalOpen, setIsModalOpen] = useState(null);
+
+
+  //  const { data: chair_data} = useQuery({
+  //       queryKey: ["list-chair"],
+  //       queryFn: GetAllChairApi,
+  //   });
+
   const { data: teacher_data } = useQuery({
     queryKey: ["list-teacher"],
     queryFn: GetAllTeacher,
@@ -18,11 +25,13 @@ function ListTeacher() {
 
   const teacherMutation = useMutation({
     mutationKey: ["teacher-delete"],
-    mutationFn: DeleteTeacherApi,
+    mutationFn: DeleteUserApi,
     onSuccess: (data) => {
       toast.success(data.message || "O'qituvchi muvaffaqiyatli o'chirildi");
       setIsModalOpen(null);
+      window.location.reload();
     },
+
     onError: (error) => {
       toast.error(error.message || "Xatolik yuz berdi");
     },
@@ -46,20 +55,15 @@ function ListTeacher() {
 
   return (
     <div className="space-y-6">
-      <div className="flex justify-between items-center">
-        <h1 className="text-2xl font-bold">O'qituvchilar ro'yxati</h1>
+      <div className="flex items-center justify-between">
+        <h2 className="text-2xl font-bold text-gray-800">O'qituvchilar ro'yxati</h2>
+        <Link to="/register" className="btn btn-primary">
+          Qo'shish
+        </Link>
       </div>
 
       <div className="bg-white rounded-lg shadow p-6">
-        {/* {teacher_data?.map((teacher) => {
-          return (
-            <div key={teacher.id}>
-              <h1>
-                {teacher.first_name} {teacher.last_name} {teacher.patronymic}
-              </h1>
-            </div>
-          );
-        })} */}
+
 
         <table className="w-full">
           <thead>
@@ -91,11 +95,11 @@ function ListTeacher() {
                       </Link> */}
                       <button
                         className="flex items-center justify-start  "
-                        onClick={() => handleDeleteClick(teacher?.id)}
+                        onClick={() => handleDeleteClick(teacher?.user_id)}
                       >
                         <MdDelete className="text-2xl text-red-600" />
                       </button>
-                      {isModalOpen === teacher?.id && (
+                      {isModalOpen === teacher?.user_id && (
                         <div className="fixed inset-0 flex items-center justify-center bg-gray-500/50">
                           <div className="bg-white p-6 rounded-lg shadow-lg">
                             <h2 className="text-lg font-semibold mb-4">
@@ -116,7 +120,7 @@ function ListTeacher() {
                               </button>
                               <button
                                 className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700"
-                                onClick={() => deleteHandler(teacher?.id)}
+                                onClick={() => deleteHandler(teacher?.user_id)}
                               >
                                 O‘chirish
                               </button>
