@@ -31,13 +31,14 @@ export const DeleteSubjectApi = async (subjectId) => {
     );
     return response.data;
 };
-// export const detailDepartment = async (departmentId) => {
-//     const department = await axiosInstance.get(`${API_URL}/department/department_detail/${departmentId}`, {});
-//     return department.data;
-// };
+
+export const detailSubjectApi = async (subjectId) => {
+    const response = await axiosOrganization.get(`/subjects/get/${subjectId}`);
+    return response.data;
+};
 export const UpdateSubjectApi = async (subjectData) => {
     const response = await axiosOrganization.put(
-        `${API_URL}/subjects/update/${subjectData?.subjectId}`,
+        `/subjects/update/${subjectData?.subjectId}`,
         {
             name: subjectData.name
         }

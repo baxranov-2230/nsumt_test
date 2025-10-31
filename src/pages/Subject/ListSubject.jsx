@@ -9,6 +9,7 @@ import { MdDelete } from "react-icons/md";
 import { DeleteSubjectApi, GetAllSubjectApi } from "../../Api/SubjectApi";
 
 function ListSubject() {
+
     const [isModalOpen, setIsModalOpen] = useState(null);
     const { isError, isSuccess, isLoading, data, error, refetch } = useQuery({
         queryKey: ["list-subject"],
@@ -73,14 +74,14 @@ function ListSubject() {
                                         <td className="p-3 ">{fan?.name}</td>
                                         <td className="p-3">
                                             <div className="flex justify-center">
-                                                {/* <Link
+                                                <Link
                                                     className=" flex items-center justify-start   pr-8"
-                                                    to={`/update-department/${kafedra?.department_id}`}
+                                                    to={`/update-subject/${fan?.id}`}
                                                 >
                                                     <button>
                                                         <FaRegEdit className="text-2xl text-[#3697A5]" />
                                                     </button>
-                                                </Link> */}
+                                                </Link>
                                                 <button
                                                     className="flex items-center justify-start  "
                                                     onClick={() => handleDeleteClick(fan?.id)}
@@ -88,8 +89,7 @@ function ListSubject() {
                                                     <MdDelete className="text-2xl text-red-600" />
                                                 </button>
                                                 {isModalOpen === fan?.id && (
-                                                    <div
-                                                        className="fixed inset-0 flex items-center justify-center bg-gray-500/50">
+                                                    <div className="fixed inset-0 flex items-center justify-center bg-gray-500/50">
                                                         <div className="bg-white p-6 rounded-lg shadow-lg">
                                                             <h2 className="text-lg font-semibold mb-4">
                                                                 Haqiqatan ham o‘chirmoqchimisiz?
@@ -131,3 +131,4 @@ function ListSubject() {
 }
 
 export default ListSubject;
+

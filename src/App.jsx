@@ -10,11 +10,6 @@ import {
 } from "react-router-dom";
 import { Menu as MenuIcon, Bell } from "lucide-react";
 import { jwtDecode } from "jwt-decode";
-<<<<<<< HEAD
-=======
-
-import { Toaster } from "react-hot-toast";
->>>>>>> e27ea06 (Subject)
 
 import { Toaster } from "react-hot-toast";
 
@@ -30,19 +25,15 @@ import Dashboard from "./pages/Dashboard";
 
 import LoginPage from "./pages/LoginPage.jsx";
 import { useQuery } from "@tanstack/react-query";
-<<<<<<< HEAD
-=======
-
->>>>>>> e27ea06 (Subject)
 
 import ListQuestion from "./pages/Quetion/ListQuestion.jsx";
 import CreateQuestion from "./pages/Quetion/CreateQuestion.jsx";
-import RegisterTeacher from "./pages/Teacher/RegisterTeacher.jsx"
-import ListTeacher from "./pages/Teacher/ListTeacher.jsx"
+import RegisterTeacher from "./pages/Teacher/RegisterTeacher.jsx";
+import ListTeacher from "./pages/Teacher/ListTeacher.jsx";
 import CreateSubject from "./pages/Subject/CreateSubject.jsx";
 import ListSubject from "./pages/Subject/ListSubject.jsx";
+import UpdateSubject from "./pages/Subject/UpdateSubject.jsx";
 
-<<<<<<< HEAD
 function ProtectedRoute({ children }) {
   const token = JSON.parse(localStorage.getItem("token"));
   const location = useLocation();
@@ -50,16 +41,6 @@ function ProtectedRoute({ children }) {
     return <Navigate to="/login" state={{ from: location }} replace />;
   }
   return children;
-=======
-
-function ProtectedRoute({ children }) {
-    const token = JSON.parse(localStorage.getItem("token"));
-    const location = useLocation();
-    if (!token) {
-        return <Navigate to="/login" state={{ from: location }} replace />;
-    }
-    return children;
->>>>>>> e27ea06 (Subject)
 }
 
 function App() {
@@ -100,7 +81,6 @@ function App() {
     }
   }, [localStorage.getItem("token")]);
 
-<<<<<<< HEAD
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
@@ -133,177 +113,6 @@ function App() {
                 onClick={() => setIsSidebarOpen(!isSidebarOpen)}
               />
               <HemisLogo className="h-8" />
-=======
-
-    const [anchorEl, setAnchorEl] = useState(null);
-    const open = Boolean(anchorEl);
-    const handleClick = (event) => {
-        setAnchorEl(event.currentTarget);
-    };
-    const handleClose = () => {
-        setAnchorEl(null);
-    };
-    const handleLogout = async () => {
-        localStorage.removeItem("token");
-        return <Navigate to="/login" state={{ from: location }} replace />;
-    };
-    return (
-        <div className="min-h-screen bg-[#F5F5F9] ">
-            <div
-                className={` ${isPublicPage ? "pt-8" : ""}`}>
-                {isPublicPage &&
-                    <Sidebar isOpen={isSidebarOpen} />}
-                <header className={`bg-white px-6 mx-6 transition-all duration-300  text-black sticky top-0   z-10 ${isPublicPage && isSidebarOpen
-                    ? "sm:ml-72"
-                    : isPublicPage
-                        ? "sm:ml-28"
-                        : "hidden"
-                    }`}
-                >
-
-                    <div className="w flex  items-center justify-between  h-16">
-                        <div className="flex items-center space-x-4">
-                            <MenuIcon
-                                className="h-6 w-6 cursor-pointer"
-                                onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-                            />
-                            <HemisLogo className="h-8" />
-                        </div>
-                        <div className="flex items-center space-x-6 mr-10">
-
-                            <Bell className="h-5 w-5 cursor-pointer" />
-                            <div>
-                                <Button
-                                    id="fade-button"
-                                    aria-controls={open ? "fade-menu" : undefined}
-                                    aria-haspopup="true"
-                                    aria-expanded={open ? "true" : undefined}
-                                    onClick={handleClick}
-                                >
-                                    <div className="flex items-center space-x-3 text-black">
-                                        <div
-                                            className="h-8 w-8 rounded-full bg-[#E7E7FF] flex items-center justify-center">
-                                            <span className="text-sm font-medium">JS</span>
-                                        </div>
-                                    </div>
-                                </Button>
-                                <Menu
-                                    id="fade-menu"
-                                    MenuListProps={{
-                                        "aria-labelledby": "fade-button",
-                                    }}
-                                    anchorEl={anchorEl}
-                                    open={open}
-                                    onClose={handleClose}
-                                    TransitionComponent={Fade}
-                                >
-                                    <MenuItem onClick={handleClose}>
-                                        <IoIosPerson
-                                            className="mr-2 text-2xl text-white bg-amber-300 rounded-full p-1" /> <Link
-                                                to="/profile">Profile</Link>
-                                    </MenuItem>
-                                    {/*<MenuItem onClick={handleClose}>My account</MenuItem>*/}
-                                    <MenuItem
-                                        onClick={() => {
-                                            handleLogout();
-                                            handleClose();
-                                        }}
-                                    >
-                                        <LuLogOut
-                                            className="mr-2 font-bold text-white text-2xl bg-red-500 rounded-full p-1" /> Logout
-                                    </MenuItem>
-                                </Menu>
-                            </div>
-                        </div>
-                    </div>
-
-                </header>
-                <main
-                    className={` p-6  transition-all duration-300 ${isPublicPage && isSidebarOpen
-                        ? "sm:ml-64"
-                        : isPublicPage
-                            ? "sm:ml-20"
-                            : ""
-                        }`}
-                >
-
-                    <Routes>
-                        <Route path="/" element={<LoginPage />} />
-                        <Route path="/login" element={<LoginPage />} />
-
-
-                        <Route path="/dashboard" element={<Dashboard />} />
-                        <Route
-                            path="/register-teacher"
-                            element={
-                                <ProtectedRoute>
-                                    <RegisterTeacher />
-                                </ProtectedRoute>
-                            }
-                        />
-                        <Route
-                            path="/list-teacher"
-                            element={
-                                <ProtectedRoute>
-                                    <ListTeacher />
-                                </ProtectedRoute>
-                            }
-                        />
-                        <Route
-                            path="/list-question"
-                            element={
-                                <ProtectedRoute>
-                                    <ListQuestion />
-                                </ProtectedRoute>
-                            }
-                        />
-
-                        {/*<Route*/}
-                        {/*    path="/list-employee"*/}
-
-                        {/*    element={*/}
-                        {/*        <ProtectedRoute>*/}
-                        {/*            <ListEmployee/>*/}
-                        {/*        </ProtectedRoute>*/}
-                        {/*    }*/}
-                        {/*/>*/}
-
-                        <Route
-                            path="/create-subject"
-
-                            element={
-                                <ProtectedRoute>
-                                    <CreateSubject />
-                                </ProtectedRoute>
-                            }
-                        />
-                        <Route
-                            path="/create-question"
-
-                            element={
-                                <ProtectedRoute>
-                                    <CreateQuestion />
-                                </ProtectedRoute>
-                            }
-                        />
-                         <Route
-                            path="/list-subject"
-                            element={
-                                <ProtectedRoute>
-                                    <ListSubject />
-                                </ProtectedRoute>
-                            }
-                        />
-
-
-
-                        <Route path="*" element={<div>404 - Sahifa topilmadi</div>} />
-
-
-                    </Routes>
-                    <Toaster />
-                </main>
->>>>>>> e27ea06 (Subject)
             </div>
             <div className="flex items-center space-x-6 mr-10">
               <Bell className="h-5 w-5 cursor-pointer" />
@@ -365,6 +174,22 @@ function App() {
 
             <Route path="/dashboard" element={<Dashboard />} />
             <Route
+              path="/register-teacher"
+              element={
+                <ProtectedRoute>
+                  <RegisterTeacher />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/list-teacher"
+              element={
+                <ProtectedRoute>
+                  <ListTeacher />
+                </ProtectedRoute>
+              }
+            />
+            <Route
               path="/list-question"
               element={
                 <ProtectedRoute>
@@ -382,11 +207,36 @@ function App() {
             {/*        </ProtectedRoute>*/}
             {/*    }*/}
             {/*/>*/}
+
             <Route
               path="/create-question"
               element={
                 <ProtectedRoute>
                   <CreateQuestion />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/create-subject"
+              element={
+                <ProtectedRoute>
+                  <CreateSubject />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/list-subject"
+              element={
+                <ProtectedRoute>
+                  <ListSubject />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/update-subject/:subjectId"
+              element={
+                <ProtectedRoute>
+                  <UpdateSubject />
                 </ProtectedRoute>
               }
             />
