@@ -9,7 +9,7 @@ const axiosOrganization = axios.create({
         "Content-Type": "application/json",
     },
     withCredentials: true,
-});
+}); 
 
 // Token expired bo‘lsa tekshirish
 const isTokenExpired = (token) => {
@@ -20,7 +20,7 @@ const isTokenExpired = (token) => {
 
 axiosOrganization.interceptors.request.use((config) => {
     const token = JSON.parse(localStorage.getItem("token"));
-    console.log(token);
+    // console.log(token);
     if (token?.access_token) {
         if (isTokenExpired(token?.access_token)) {
             localStorage.removeItem("token");

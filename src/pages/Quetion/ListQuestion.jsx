@@ -6,7 +6,6 @@ import { Link } from "react-router-dom";
 import { FaRegEdit } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
 
-
 import {
   DeleteQuestionApi,
   GetAllQuestionApi,
@@ -47,14 +46,18 @@ function ListQuestion() {
     setIsModalOpen(null); // Modalni bekor qilish
   };
 
-
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <h2 className="text-2xl font-bold text-gray-800">Savollar</h2>
-        <Link to="/create-question" className="btn btn-primary">
-          Savol qo'shish
-        </Link>
+        <div>
+          <Link to="/create-question" className="btn btn-primary mr-3">
+            Savol qo'shish
+          </Link>
+          <Link to="/create-question-excel" className="btn btn-primary">
+            Excelda qo'shish
+          </Link>
+        </div>
       </div>
 
       <div className="bg-white rounded-lg shadow">
@@ -134,7 +137,6 @@ function ListQuestion() {
       </div>
     </div>
   );
-
 }
 
 export default ListQuestion;

@@ -34,6 +34,8 @@ import CreateSubject from "./pages/Subject/CreateSubject.jsx";
 import ListSubject from "./pages/Subject/ListSubject.jsx";
 import UpdateSubject from "./pages/Subject/UpdateSubject.jsx";
 import CreateTeacher from "./pages/Teacher/CreateTeacher.jsx";
+import AssignTeacherSubject from "./pages/Teacher/AssignTeacherSubject.jsx";
+import CreateQuestionExcel from "./pages/Quetion/CreateQuestionExcel.jsx";
 
 function ProtectedRoute({ children }) {
   const token = JSON.parse(localStorage.getItem("token"));
@@ -99,12 +101,13 @@ function App() {
       <div className={` ${isPublicPage ? "pt-8" : ""}`}>
         {isPublicPage && <Sidebar isOpen={isSidebarOpen} />}
         <header
-          className={`bg-white px-6 mx-6 transition-all duration-300  text-black sticky top-0   z-10 ${isPublicPage && isSidebarOpen
-            ? "sm:ml-72"
-            : isPublicPage
+          className={`bg-white px-6 mx-6 transition-all duration-300  text-black sticky top-0   z-10 ${
+            isPublicPage && isSidebarOpen
+              ? "sm:ml-72"
+              : isPublicPage
               ? "sm:ml-28"
               : "hidden"
-            }`}
+          }`}
         >
           <div className="w flex  items-center justify-between  h-16">
             <div className="flex items-center space-x-4">
@@ -160,12 +163,13 @@ function App() {
           </div>
         </header>
         <main
-          className={` p-6  transition-all duration-300 ${isPublicPage && isSidebarOpen
-            ? "sm:ml-64"
-            : isPublicPage
+          className={` p-6  transition-all duration-300 ${
+            isPublicPage && isSidebarOpen
+              ? "sm:ml-64"
+              : isPublicPage
               ? "sm:ml-20"
               : ""
-            }`}
+          }`}
         >
           <Routes>
             <Route path="/" element={<LoginPage />} />
@@ -234,6 +238,31 @@ function App() {
               element={
                 <ProtectedRoute>
                   <CreateTeacher />
+                </ProtectedRoute>
+              }
+            />
+            {/* <Route
+              path="/assign-teacher-subject"
+              element={
+                <ProtectedRoute>
+                  <AssignTeacherSubject />
+                </ProtectedRoute>
+              }
+            /> */}
+            <Route
+              path="/assign-teacher-subject/:teacherId"
+              element={
+                <ProtectedRoute>
+                  <AssignTeacherSubject />
+                </ProtectedRoute>
+              }
+            />
+
+            <Route
+              path="/create-question-excel"
+              element={
+                <ProtectedRoute>
+                  <CreateQuestionExcel />
                 </ProtectedRoute>
               }
             />

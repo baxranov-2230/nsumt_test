@@ -20,7 +20,7 @@ function CreateTeacher() {
         mutationFn: CreateUserApi,
         onError: (error) => {
             toast.error(error?.message || "Foydalanuvchi yaratishda xatolik");
-        },
+        },  
     });
 
     // 2️⃣ O‘qituvchini yaratish (teacher info)
@@ -157,7 +157,7 @@ function CreateTeacher() {
                                 {isLoading ? (
                                     <MenuItem disabled>Loading...</MenuItem>
                                 ) : (
-                                    chair_data?.map((chair) => (
+                                    chair_data?.data?.map((chair) => (
                                         <MenuItem key={chair?.id} value={chair?.id}>
                                             {chair?.name}
                                         </MenuItem>
