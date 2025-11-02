@@ -17,13 +17,15 @@ export const CreateSubjectApi = async (subjectData) => {
   }
 };
 
+
+
 // export const GetAllSubjectApi = async () => {
 //     const allSubject = await axiosOrganization.get(`/subjects`);
 //     return allSubject.data;
 // };
 
 export const GetAllSubjectApi = async ({
-  limit = 10,
+  limit = 20,
   offset = 0,
   search = "",
 }) => {
@@ -69,3 +71,5 @@ export const UpdateSubjectApi = async (subjectData) => {
   );
   return response.data;
 };
+
+

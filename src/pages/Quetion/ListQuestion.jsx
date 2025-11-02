@@ -10,12 +10,25 @@ import {
   DeleteQuestionApi,
   GetAllQuestionApi,
 } from "../../Api/QuestionApi.jsx";
+import { GetAllSubjectApi } from "../../Api/SubjectApi.jsx";
 
 function ListQuestion() {
   const [isModalOpen, setIsModalOpen] = useState(null);
+  const [limit, setLimit] = useState(100);
+  const [offset, setOffset] = useState(0);
+  const [searchTerm, setSearchTerm] = useState("");
   const { isError, isSuccess, isLoading, data, error, refetch } = useQuery({
     queryKey: ["list-question"],
     queryFn: GetAllQuestionApi,
+  });
+  const { data: subject_data } = useQuery({
+    queryKey: ["list-subject", limit, offset, searchTerm],
+    queryFn: () =>
+      GetAllSubjectApi({
+        limit,
+        offset,
+        search: searchTerm,
+      }),
   });
 
   const questionMutation = useMutation({
@@ -74,11 +87,17 @@ function ListQuestion() {
             </thead>
             <tbody>
               {data?.map((question, index) => {
+                const subjectName =
+                  subject_data?.data?.find(
+                    (subj) => subj.id === question.subject_id
+                  )?.name || "Noma'lum fan";
+                  
                 return (
                   <tr className="border-t" key={question?.id}>
                     <td className="p-3 ">{index + 1}</td>
                     <td className="p-3 ">{question?.text}</td>
-                    <td className="p-3">{question?.subject_id}</td>
+
+                    <td className="p-3">{subjectName}</td>
                     {/*<td className="p-3">{category?.category_name_en}</td>*/}
                     <td className="p-3">
                       <div className="flex justify-center">
