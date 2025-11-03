@@ -36,6 +36,7 @@ import UpdateSubject from "./pages/Subject/UpdateSubject.jsx";
 import CreateTeacher from "./pages/Teacher/CreateTeacher.jsx";
 import AssignTeacherSubject from "./pages/Teacher/AssignTeacherSubject.jsx";
 import CreateQuestionExcel from "./pages/Quetion/CreateQuestionExcel.jsx";
+import ListSubjectByTeacher from "./pages/Subject/ListSubjectByTeacher.jsx";
 
 function ProtectedRoute({ children }) {
   const token = JSON.parse(localStorage.getItem("token"));
@@ -263,6 +264,15 @@ function App() {
               element={
                 <ProtectedRoute>
                   <CreateQuestionExcel />
+                </ProtectedRoute>
+              }
+            />
+
+            <Route
+              path="/by-teacher-subject"
+              element={
+                <ProtectedRoute>
+                  <ListSubjectByTeacher />
                 </ProtectedRoute>
               }
             />

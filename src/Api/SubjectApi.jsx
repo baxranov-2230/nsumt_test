@@ -62,6 +62,11 @@ export const detailSubjectApi = async (subjectId) => {
   const response = await axiosOrganization.get(`/subjects/get/${subjectId}`);
   return response.data;
 };
+
+export const detailSubjectByTeacherApi = async (teacherId) => {
+  const response = await axiosOrganization.get(`/subject_teacher/get/teacher/${teacherId}`);
+  return response.data;
+};
 export const UpdateSubjectApi = async (subjectData) => {
   const response = await axiosOrganization.put(
     `/subjects/update/${subjectData?.subjectId}`,

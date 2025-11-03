@@ -14,7 +14,7 @@ import { GetAllSubjectApi } from "../../Api/SubjectApi.jsx";
 
 function ListQuestion() {
   const [isModalOpen, setIsModalOpen] = useState(null);
-  const [limit, setLimit] = useState(100);
+  const [limit, setLimit] = useState(500);
   const [offset, setOffset] = useState(0);
   const [searchTerm, setSearchTerm] = useState("");
   const { isError, isSuccess, isLoading, data, error, refetch } = useQuery({
