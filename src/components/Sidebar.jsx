@@ -18,11 +18,12 @@ import { RiUserReceived2Fill } from "react-icons/ri";
 import { jwtDecode } from "jwt-decode";
 
 function Sidebar({ isOpen }) {
-  const token = JSON.parse(localStorage.getItem("token"));
+  // const token = JSON.parse(localStorage.getItem("token"));
 
-  const decoded = jwtDecode(token.access_token);
-  console.log(decoded?.roles[0]);
-  console.log(decoded);
+  // const decoded = jwtDecode(token.access_token);
+  // // const userRole = decoded?.roles[0];
+  // console.log(decoded?.roles[0]);
+  // console.log(decoded);
   const location = useLocation();
   const [expandedCategories, setExpandedCategories] = useState(["/"]);
 
@@ -31,7 +32,7 @@ function Sidebar({ isOpen }) {
     const token = localStorage.getItem("token");
     if (token) {
       const decoded = jwtDecode(token);
-      setUserRole(decoded?.role);
+      setUserRole(decoded?.role[0]);
     } else {
       setUserRole(null);
     }
@@ -44,74 +45,49 @@ function Sidebar({ isOpen }) {
     );
   };
   let menuCategories;
-  // if (userRole === "admin") {
-  menuCategories = [
-    // {
-    //     id: "main",
-    //     items: [{icon: Home, label: "Bosh sahifa", path: "/admin"}],
-    // },
-    {
-      id: "question",
-      items: [
-        {
-          icon: BsBuildingX,
-          label: "Savollar ro'yxati",
-          path: "/list-question",
-        },
-      ],
-    },
-    {
-      id: "teacher",
-      items: [
-        { icon: BsBuildingX, label: "O'qituvchilar", path: "/list-teacher" },
-      ],
-    },
-    {
-      id: "subject",
-      items: [{ icon: BsBuildingX, label: "Fanlar", path: "/list-subject" }],
-    },
-    // {
-    //     id: "study_direction",
-    //     items: [
-    //         {icon: RiGraduationCapFill  , label: "Ta'lim yo'nalishlari", path: "/study-direction"},
-    //     ],
-    // },
-    // {
-    //     id: "list_application",
-    //     items: [
-    //         {icon: RiUserReceived2Fill , label: "Kelgan arizalar", path: "/list-application"},
-    //     ],
-    // },
-    // {
-    //     id: "list_study_form",
-    //     items: [
-    //         {icon: PiListChecksFill , label: "Ta'lim shakli", path: "/list-study-form"},
-    //     ],
-    // },
-
-    //         {
-    //             id: "no_list",
-    //             items: [
-    //                 {icon: FaList, label: "Rad bo'lgan ", path: "/no-list-application"},
-    //             ],
-    //         },
-    //     ];
-    // } else if (userRole === "student") {
-    //     menuCategories = [
-    //         {
-    //             id: "application",
-    //             items: [{icon: MdOutlinePostAdd, label: "Arizalar", path: "/application"}],
-    //         },
-    //         {
-    //             id: "rating",
-    //             items: [{icon: LuNotebookText, label: "Reyting daftarcha", path: "/rating"}],
-    //         },
-    //         {
-    //             id: "profile",
-    //             items: [{icon: CgProfile, label: "Profil", path: "/profile"}],
-    //         },
-  ];
-  // }
+  if (userRole === "admin") {
+    menuCategories = [
+      {
+        id: "question",
+        items: [
+          {
+            icon: BsBuildingX,
+            label: "Savollar ro'yxati",
+            path: "/list-question",
+          },
+        ],
+      },
+      {
+        id: "teacher",
+        items: [
+          { icon: BsBuildingX, label: "O'qituvchilar", path: "/list-teacher" },
+        ],
+      },
+      {
+        id: "subject",
+        items: [{ icon: BsBuildingX, label: "Fanlar", path: "/list-subject" }],
+      },
+    ];
+  } else if (userRole === "teacher") {
+    menuCategories = [
+      {
+        id: "question",
+        items: [
+          {
+            icon: BsBuildingX,
+            label: "Savollar ro'yxati",
+            path: "/list-question",
+          },
+        ],
+      },
+      {
+        id: "subject",
+        items: [
+          { icon: BsBuildingX, label: "Fanlar", path: "/by-teacher-subject" },
+        ],
+      },
+    ];
+  }
 
   return (
     <aside

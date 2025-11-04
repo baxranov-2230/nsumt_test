@@ -1,4 +1,5 @@
 import axiosInstance from "./axiosTest.jsx";
+import axiosOrganization from "./axiosOrganization.jsx";
 
 const API_URL = import.meta.env.VITE_TEST_API_URL;
 
@@ -24,18 +25,47 @@ export const CreateQuestionApi = async (questionData) => {
   }
 };
 
-export const GetAllQuestionApi = async () => {
+// export const GetAllQuestionApi = async () => {
+//   try {
+//     const response = await axiosInstance.get(`/questions`);
+//     return response.data;
+//   } catch (error) {
+//     if (error.response && error.response.status === 400) {
+//       console.warn("Savollar mavjud emas (400 xato, lekin bu normal holat).");
+//       return [];
+//     }
+//     throw error;
+//   }
+// };
+
+export const GetAllQuestionApi = async ({
+                                         limit = 20,
+                                         offset = 0,
+
+                                       }) => {
   try {
-    const response = await axiosInstance.get(`/questions`);
+    const params = new URLSearchParams();
+    params.append("limit", limit);
+    params.append("offset", offset);
+
+    // Agar qidiruv bo'lsa — search param qo'shiladi
+    // if (search) {
+    //   params.append("search", search);
+    // }
+
+    const response = await axiosInstance.get(
+        `/questions?${params.toString()}`
+    );
     return response.data;
   } catch (error) {
-    if (error.response && error.response.status === 400) {
-      console.warn("Savollar mavjud emas (400 xato, lekin bu normal holat).");
-      return [];
+    if (error.response?.status === 404) {
+      return null;
     }
     throw error;
   }
 };
+
+
 export const DeleteQuestionApi = async (questionId) => {
   const response = await axiosInstance.delete(
     `/questions/delete/${questionId}`

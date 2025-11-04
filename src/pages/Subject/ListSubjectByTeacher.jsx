@@ -10,38 +10,29 @@ import {
   GetAllSubjectApi,
 } from "../../Api/SubjectApi";
 import { GetAllTeacher } from "../../Api/TeacherApi";
+import { jwtDecode } from "jwt-decode";
 
 function ListSubjectByTeacher() {
   const [isModalOpen, setIsModalOpen] = useState(null);
+  const token = JSON.parse(localStorage.getItem("token"));
+
+  const decoded = jwtDecode(token.access_token);
+
+  const teacherId = decoded?.user_id;
+
 
   const [inputValue, setInputValue] = useState("");
   const [limit, setLimit] = useState(20);
   const [offset, setOffset] = useState(0);
   const [searchTerm, setSearchTerm] = useState("");
 
-  // 🔹 API chaqiruv — limit, offset, search bilan
-  //   const { data: subject_data, refetch } = useQuery({
-  //     queryKey: ["list-subject", ],
-  //     queryFn: () =>
-  //       GetAllSubjectApi({}),
-  //   });
 
-  const { data: teacher_data, refetch } = useQuery({
-    queryKey: ["list-teacher", limit, offset, searchTerm],
-    queryFn: () =>
-      GetAllTeacher({
-        limit,
-        offset,
-        search: searchTerm,
-      }),
-  });
-  
+
   const { data: subject_data } = useQuery({
     queryKey: ["subject-detail-by-teacher"],
     queryFn: () => detailSubjectByTeacherApi(teacherId),
   });
 
-  
   // 🔹 Fan o‘chirish
   const subjectMutation = useMutation({
     mutationKey: ["subject-delete"],
@@ -123,8 +114,8 @@ function ListSubjectByTeacher() {
             </tr>
           </thead>
           <tbody>
-            {subject_data?.data?.length > 0 ? (
-              subject_data.data.map((fan, index) => (
+            {subject_data?.length > 0 ? (
+              subject_data?.map((fan, index) => (
                 <tr className="border-t" key={fan?.id}>
                   <td className="p-3">{offset + index + 1}</td>
                   <td className="p-3">{fan?.name}</td>

@@ -40,7 +40,11 @@ export const CreateTeacherApi = async (userData) => {
 //   return response.data;
 // };
 
-export const GetAllTeacher = async ({ limit = 20, offset = 0, search = "" }) => {
+export const GetAllTeacher = async ({
+  limit = 20,
+  offset = 0,
+  search = "",
+}) => {
   try {
     const params = new URLSearchParams();
     params.append("limit", limit);
@@ -54,17 +58,24 @@ export const GetAllTeacher = async ({ limit = 20, offset = 0, search = "" }) => 
   }
 };
 
-
 export const DeleteUserApi = async (userId) => {
   const response = await axiosOrganization.delete(`/user/delete/${userId}`);
   return response.data;
 };
 
 export const AssignTeacherSubjectApi = async (teacherAssignSubjectData) => {
-  const response = await axiosOrganization.post(`/subjects/assign_teacher`, {
-    subject_id: teacherAssignSubjectData.subject_id,
-    teacher_id: teacherAssignSubjectData.teacher_id,
-  });
+  const params = new URLSearchParams();
+  params.append("subject_id", teacherAssignSubjectData.subject_id);
+  params.append("teacher_id", teacherAssignSubjectData.teacher_id);
+  console.log(teacherAssignSubjectData);
+  const response = await axiosOrganization.post(
+    `/subject_teacher/create?${params.toString()}`
+  );
+
+  // const response = await axiosOrganization.post(`/subject_teacher/create`, {
+  //   subject_id: teacherAssignSubjectData.subject_id,
+  //   teacher_id: teacherAssignSubjectData.teacher_id,
+  // });
   console.log(response.data);
   return response.data;
 };
