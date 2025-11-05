@@ -82,7 +82,7 @@ export const CreateQuestionExcelApi = async (questionData) => {
     }
     // console.log(formData)
     const response = await axiosInstance.post(
-      `/questions/create/exel?subject_id=${questionData.subject_id}`,
+      `/questions/create/excel?subject_id=${questionData.subject_id}`,
       formData,
       {
         headers: {
