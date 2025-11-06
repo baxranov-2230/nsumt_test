@@ -25,19 +25,6 @@ export const CreateQuestionApi = async (questionData) => {
   }
 };
 
-// export const GetAllQuestionApi = async () => {
-//   try {
-//     const response = await axiosInstance.get(`/questions`);
-//     return response.data;
-//   } catch (error) {
-//     if (error.response && error.response.status === 400) {
-//       console.warn("Savollar mavjud emas (400 xato, lekin bu normal holat).");
-//       return [];
-//     }
-//     throw error;
-//   }
-// };
-
 export const GetAllQuestionApi = async ({
                                          limit = 20,
                                          offset = 0,
@@ -47,11 +34,6 @@ export const GetAllQuestionApi = async ({
     const params = new URLSearchParams();
     params.append("limit", limit);
     params.append("offset", offset);
-
-    // Agar qidiruv bo'lsa — search param qo'shiladi
-    // if (search) {
-    //   params.append("search", search);
-    // }
 
     const response = await axiosInstance.get(
         `/questions?${params.toString()}`
