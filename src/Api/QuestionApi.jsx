@@ -28,7 +28,6 @@ export const CreateQuestionApi = async (questionData) => {
 export const GetAllQuestionApi = async ({
                                          limit = 20,
                                          offset = 0,
-
                                        }) => {
   try {
     const params = new URLSearchParams();

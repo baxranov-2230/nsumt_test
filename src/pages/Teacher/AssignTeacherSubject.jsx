@@ -164,7 +164,7 @@ const groupBadgeStyles = {
   textAlign: "center",
 };
 
-// 🔹 Label formatlash
+// 🔹 Label formatlash yana tepaga qiymat chiqib turadi
 const formatGroupLabel = (data) => (
   <div style={groupStyles}>
     <span>{data.label}</span>

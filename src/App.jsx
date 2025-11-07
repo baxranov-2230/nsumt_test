@@ -1,30 +1,30 @@
-import React, { useState, useEffect } from "react";
+import React, {useState, useEffect} from "react";
 import {
-  BrowserRouter as Router,
-  Routes,
-  Route,
-  useLocation,
-  useNavigate,
-  Navigate,
-  Link,
+    BrowserRouter as Router,
+    Routes,
+    Route,
+    useLocation,
+    useNavigate,
+    Navigate,
+    Link,
 } from "react-router-dom";
-import { Menu as MenuIcon, Bell } from "lucide-react";
-import { jwtDecode } from "jwt-decode";
+import {Menu as MenuIcon, Bell} from "lucide-react";
+import {jwtDecode} from "jwt-decode";
 
-import { Toaster } from "react-hot-toast";
+import {Toaster} from "react-hot-toast";
 
 import Button from "@mui/material/Button";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import Fade from "@mui/material/Fade";
-import { IoIosPerson } from "react-icons/io";
-import { LuLogOut } from "react-icons/lu";
+import {IoIosPerson} from "react-icons/io";
+import {LuLogOut} from "react-icons/lu";
 import HemisLogo from "./components/HemisLogo";
 import Sidebar from "./components/Sidebar";
 import Dashboard from "./pages/Dashboard";
 
 import LoginPage from "./pages/LoginPage.jsx";
-import { useQuery } from "@tanstack/react-query";
+import {useQuery} from "@tanstack/react-query";
 
 import ListQuestion from "./pages/Quetion/ListQuestion.jsx";
 import CreateQuestion from "./pages/Quetion/CreateQuestion.jsx";
@@ -37,212 +37,217 @@ import CreateTeacher from "./pages/Teacher/CreateTeacher.jsx";
 import AssignTeacherSubject from "./pages/Teacher/AssignTeacherSubject.jsx";
 import CreateQuestionExcel from "./pages/Quetion/CreateQuestionExcel.jsx";
 import ListSubjectByTeacher from "./pages/Subject/ListSubjectByTeacher.jsx";
+import ListQuiz from "./pages/Quiz/ListQuiz.jsx";
+import CreateQuiz from "./pages/Quiz/CreateQuiz.jsx";
 
-function ProtectedRoute({ children }) {
-  const token = JSON.parse(localStorage.getItem("token"));
-  const location = useLocation();
-  if (!token) {
-    return <Navigate to="/login" state={{ from: location }} replace />;
-  }
-  return children;
+function ProtectedRoute({children}) {
+    const token = JSON.parse(localStorage.getItem("token"));
+    const location = useLocation();
+    if (!token) {
+        return <Navigate to="/login" state={{from: location}} replace/>;
+    }
+    return children;
 }
 
 function App() {
-  const navigate = useNavigate();
-  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
-  const location = useLocation(); // Get current route location
-  const isLoginPage =
-    location.pathname === "/login" || location.pathname === "/";
-  // const isRegisterPage = location.pathname === "/register";
-  const isVerifySMSPage = location.pathname === "/verify-sms";
-  const isPassportPage = location.pathname === "/passport";
-  const isForgetPassword = location.pathname === "/forget-password";
-  const isResetPassword = location.pathname === "/reset-password";
-  const [userRole, setUserRole] = useState("");
+    const navigate = useNavigate();
+    const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+    const location = useLocation(); // Get current route location
+    const isLoginPage =
+        location.pathname === "/login" || location.pathname === "/";
+    // const isRegisterPage = location.pathname === "/register";
+    const isVerifySMSPage = location.pathname === "/verify-sms";
+    const isPassportPage = location.pathname === "/passport";
+    const isForgetPassword = location.pathname === "/forget-password";
+    const isResetPassword = location.pathname === "/reset-password";
+    const [userRole, setUserRole] = useState("");
 
-  const isPublicPage = !(
-    isLoginPage ||
-    // isRegisterPage ||
-    isVerifySMSPage ||
-    isPassportPage ||
-    isForgetPassword ||
-    isResetPassword
-  );
+    const isPublicPage = !(
+        isLoginPage ||
+        // isRegisterPage ||
+        isVerifySMSPage ||
+        isPassportPage ||
+        isForgetPassword ||
+        isResetPassword
+    );
 
-  // const {data: application, isLoading, error} = useQuery({
-  //     queryKey: ["chek-application"],
-  //     queryFn: GetApplicationApi,
-  // });
-  // const isDisabled = !!application || isLoading;
+    // const {data: application, isLoading, error} = useQuery({
+    //     queryKey: ["chek-application"],
+    //     queryFn: GetApplicationApi,
+    // });
+    // const isDisabled = !!application || isLoading;
 
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (token) {
-      const decoded = jwtDecode(token);
-      setUserRole(decoded.role);
-    } else {
-      setUserRole(null);
-    }
-  }, [localStorage.getItem("token")]);
+    useEffect(() => {
+        const token = localStorage.getItem("token");
+        if (token) {
+            const decoded = jwtDecode(token);
+            setUserRole(decoded.role);
+        } else {
+            setUserRole(null);
+        }
+    }, [localStorage.getItem("token")]);
 
-  const [anchorEl, setAnchorEl] = useState(null);
-  const open = Boolean(anchorEl);
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-  const handleLogout = async () => {
-    localStorage.removeItem("token");
-    return <Navigate to="/login" state={{ from: location }} replace />;
-  };
-  return (
-    <div className="min-h-screen bg-[#F5F5F9] ">
-      <div className={` ${isPublicPage ? "pt-8" : ""}`}>
-        {isPublicPage && <Sidebar isOpen={isSidebarOpen} />}
-        <header
-          className={`bg-white px-6 mx-6 transition-all duration-300  text-black sticky top-0   z-10 ${
-            isPublicPage && isSidebarOpen
-              ? "sm:ml-72"
-              : isPublicPage
-              ? "sm:ml-28"
-              : "hidden"
-          }`}
-        >
-          <div className="w flex  items-center justify-between  h-16">
-            <div className="flex items-center space-x-4">
-              <MenuIcon
-                className="h-6 w-6 cursor-pointer"
-                onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-              />
-              <HemisLogo className="h-8" />
-            </div>
-            <div className="flex items-center space-x-6 mr-10">
-              <Bell className="h-5 w-5 cursor-pointer" />
-              <div>
-                <Button
-                  id="fade-button"
-                  aria-controls={open ? "fade-menu" : undefined}
-                  aria-haspopup="true"
-                  aria-expanded={open ? "true" : undefined}
-                  onClick={handleClick}
+    const [anchorEl, setAnchorEl] = useState(null);
+    const open = Boolean(anchorEl);
+    const handleClick = (event) => {
+        setAnchorEl(event.currentTarget);
+    };
+    const handleClose = () => {
+        setAnchorEl(null);
+    };
+    const handleLogout = async () => {
+        localStorage.removeItem("token");
+        return <Navigate to="/login" state={{from: location}} replace/>;
+    };
+    return (
+        <div className="min-h-screen bg-[#F5F5F9] ">
+            <div className={` ${isPublicPage ? "pt-8" : ""}`}>
+                {isPublicPage && <Sidebar isOpen={isSidebarOpen}/>}
+                <header
+                    className={`bg-white px-6 mx-6 transition-all duration-300  text-black sticky top-0   z-10 ${
+                        isPublicPage && isSidebarOpen
+                            ? "sm:ml-72"
+                            : isPublicPage
+                                ? "sm:ml-28"
+                                : "hidden"
+                    }`}
                 >
-                  <div className="flex items-center space-x-3 text-black">
-                    <div className="h-8 w-8 rounded-full bg-[#E7E7FF] flex items-center justify-center">
-                      <span className="text-sm font-medium">JS</span>
+                    <div className="w flex  items-center justify-between  h-16">
+                        <div className="flex items-center space-x-4">
+                            <MenuIcon
+                                className="h-6 w-6 cursor-pointer"
+                                onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+                            />
+                            <HemisLogo className="h-8"/>
+                        </div>
+                        <div className="flex items-center space-x-6 mr-10">
+                            <Bell className="h-5 w-5 cursor-pointer"/>
+                            <div>
+                                <Button
+                                    id="fade-button"
+                                    aria-controls={open ? "fade-menu" : undefined}
+                                    aria-haspopup="true"
+                                    aria-expanded={open ? "true" : undefined}
+                                    onClick={handleClick}
+                                >
+                                    <div className="flex items-center space-x-3 text-black">
+                                        <div
+                                            className="h-8 w-8 rounded-full bg-[#E7E7FF] flex items-center justify-center">
+                                            <span className="text-sm font-medium">JS</span>
+                                        </div>
+                                    </div>
+                                </Button>
+                                <Menu
+                                    id="fade-menu"
+                                    MenuListProps={{
+                                        "aria-labelledby": "fade-button",
+                                    }}
+                                    anchorEl={anchorEl}
+                                    open={open}
+                                    onClose={handleClose}
+                                    TransitionComponent={Fade}
+                                >
+                                    <MenuItem onClick={handleClose}>
+                                        <IoIosPerson
+                                            className="mr-2 text-2xl text-white bg-amber-300 rounded-full p-1"/>{" "}
+                                        <Link to="/profile">Profile</Link>
+                                    </MenuItem>
+                                    {/*<MenuItem onClick={handleClose}>My account</MenuItem>*/}
+                                    <MenuItem
+                                        onClick={() => {
+                                            handleLogout();
+                                            handleClose();
+                                        }}
+                                    >
+                                        <LuLogOut
+                                            className="mr-2 font-bold text-white text-2xl bg-red-500 rounded-full p-1"/>{" "}
+                                        Logout
+                                    </MenuItem>
+                                </Menu>
+                            </div>
+                        </div>
                     </div>
-                  </div>
-                </Button>
-                <Menu
-                  id="fade-menu"
-                  MenuListProps={{
-                    "aria-labelledby": "fade-button",
-                  }}
-                  anchorEl={anchorEl}
-                  open={open}
-                  onClose={handleClose}
-                  TransitionComponent={Fade}
+                </header>
+                <main
+                    className={` p-6  transition-all duration-300 ${
+                        isPublicPage && isSidebarOpen
+                            ? "sm:ml-64"
+                            : isPublicPage
+                                ? "sm:ml-20"
+                                : ""
+                    }`}
                 >
-                  <MenuItem onClick={handleClose}>
-                    <IoIosPerson className="mr-2 text-2xl text-white bg-amber-300 rounded-full p-1" />{" "}
-                    <Link to="/profile">Profile</Link>
-                  </MenuItem>
-                  {/*<MenuItem onClick={handleClose}>My account</MenuItem>*/}
-                  <MenuItem
-                    onClick={() => {
-                      handleLogout();
-                      handleClose();
-                    }}
-                  >
-                    <LuLogOut className="mr-2 font-bold text-white text-2xl bg-red-500 rounded-full p-1" />{" "}
-                    Logout
-                  </MenuItem>
-                </Menu>
-              </div>
-            </div>
-          </div>
-        </header>
-        <main
-          className={` p-6  transition-all duration-300 ${
-            isPublicPage && isSidebarOpen
-              ? "sm:ml-64"
-              : isPublicPage
-              ? "sm:ml-20"
-              : ""
-          }`}
-        >
-          <Routes>
-            <Route path="/" element={<LoginPage />} />
-            <Route path="/login" element={<LoginPage />} />
+                    <Routes>
+                        <Route path="/" element={<LoginPage/>}/>
+                        <Route path="/login" element={<LoginPage/>}/>
 
-            <Route path="/dashboard" element={<Dashboard />} />
-            <Route
-              path="/register-teacher"
-              element={
-                <ProtectedRoute>
-                  <RegisterTeacher />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/list-teacher"
-              element={
-                <ProtectedRoute>
-                  <ListTeacher />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/list-question"
-              element={
-                <ProtectedRoute>
-                  <ListQuestion />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/create-question"
-              element={
-                <ProtectedRoute>
-                  <CreateQuestion />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/create-subject"
-              element={
-                <ProtectedRoute>
-                  <CreateSubject />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/list-subject"
-              element={
-                <ProtectedRoute>
-                  <ListSubject />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/update-subject/:subjectId"
-              element={
-                <ProtectedRoute>
-                  <UpdateSubject />
-                </ProtectedRoute>
-              }
-            />
+                        <Route path="/dashboard" element={<Dashboard/>}/>
+                        <Route
+                            path="/register-teacher"
+                            element={
+                                <ProtectedRoute>
+                                    <RegisterTeacher/>
+                                </ProtectedRoute>
+                            }
+                        />
+                        <Route
+                            path="/list-teacher"
+                            element={
+                                <ProtectedRoute>
+                                    <ListTeacher/>
+                                </ProtectedRoute>
+                            }
+                        />
+                        <Route
+                            path="/list-question"
+                            element={
+                                <ProtectedRoute>
+                                    <ListQuestion/>
+                                </ProtectedRoute>
+                            }
+                        />
+                        <Route
+                            path="/create-question"
+                            element={
+                                <ProtectedRoute>
+                                    <CreateQuestion/>
+                                </ProtectedRoute>
+                            }
+                        />
+                        <Route
+                            path="/create-subject"
+                            element={
+                                <ProtectedRoute>
+                                    <CreateSubject/>
+                                </ProtectedRoute>
+                            }
+                        />
+                        <Route
+                            path="/list-subject"
+                            element={
+                                <ProtectedRoute>
+                                    <ListSubject/>
+                                </ProtectedRoute>
+                            }
+                        />
+                        <Route
+                            path="/update-subject/:subjectId"
+                            element={
+                                <ProtectedRoute>
+                                    <UpdateSubject/>
+                                </ProtectedRoute>
+                            }
+                        />
 
-            <Route
-              path="/register"
-              element={
-                <ProtectedRoute>
-                  <CreateTeacher />
-                </ProtectedRoute>
-              }
-            />
-            {/* <Route
+                        <Route
+                            path="/register"
+                            element={
+                                <ProtectedRoute>
+                                    <CreateTeacher/>
+                                </ProtectedRoute>
+                            }
+                        />
+                        {/* <Route
               path="/assign-teacher-subject"
               element={
                 <ProtectedRoute>
@@ -250,40 +255,58 @@ function App() {
                 </ProtectedRoute>
               }
             /> */}
-            <Route
-              path="/assign-teacher-subject/:teacherId"
-              element={
-                <ProtectedRoute>
-                  <AssignTeacherSubject />
-                </ProtectedRoute>
-              }
-            />
+                        <Route
+                            path="/assign-teacher-subject/:teacherId"
+                            element={
+                                <ProtectedRoute>
+                                    <AssignTeacherSubject/>
+                                </ProtectedRoute>
+                            }
+                        />
 
-            <Route
-              path="/create-question-excel"
-              element={
-                <ProtectedRoute>
-                  <CreateQuestionExcel />
-                </ProtectedRoute>
-              }
-            />
+                        <Route
+                            path="/create-question-excel"
+                            element={
+                                <ProtectedRoute>
+                                    <CreateQuestionExcel/>
+                                </ProtectedRoute>
+                            }
+                        />
 
-            <Route
-              path="/by-teacher-subject"
-              element={
-                <ProtectedRoute>
-                  <ListSubjectByTeacher />
-                </ProtectedRoute>
-              }
-            />
+                        <Route
+                            path="/by-teacher-subject"
+                            element={
+                                <ProtectedRoute>
+                                    <ListSubjectByTeacher/>
+                                </ProtectedRoute>
+                            }
+                        />
+                        {/*Quiz Start*/}
+                        <Route
+                            path="/create-quiz"
+                            element={
+                                <ProtectedRoute>
+                                    <CreateQuiz/>
+                                </ProtectedRoute>
+                            }
+                        />
+                        <Route
+                            path="/list-quiz"
+                            element={
+                                <ProtectedRoute>
+                                    <ListQuiz/>
+                                </ProtectedRoute>
+                            }
+                        />
+                        {/*Quiz End*/}
 
-            <Route path="*" element={<div>404 - Sahifa topilmadi</div>} />
-          </Routes>
-          <Toaster />
-        </main>
-      </div>
-    </div>
-  );
+                        <Route path="*" element={<div>404 - Sahifa topilmadi</div>}/>
+                    </Routes>
+                    <Toaster/>
+                </main>
+            </div>
+        </div>
+    );
 }
 
 export default App;
