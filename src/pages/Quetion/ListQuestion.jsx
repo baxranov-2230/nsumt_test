@@ -112,7 +112,11 @@ function ListQuestion() {
                             return (
                                 <tr className="border-t" key={question?.id}>
                                     <td className="p-3 ">{index + 1}</td>
-                                    <td className="p-3 ">{question?.text}</td>
+                                    {/*<td className="p-3 ">{question?.text}</td>*/}
+                                    <td
+                                        dangerouslySetInnerHTML={{__html: question?.text}}
+                                        className="jodit-table-style  p-3 "
+                                    />
 
                                     <td className="p-3">{subjectName}</td>
                                     {/*<td className="p-3">{category?.category_name_en}</td>*/}
