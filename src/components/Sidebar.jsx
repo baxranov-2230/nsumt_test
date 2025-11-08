@@ -1,29 +1,13 @@
 import React, {useEffect, useState} from "react";
 import {NavLink, useLocation} from "react-router-dom";
-import {RiFolderAddLine} from "react-icons/ri";
-import {CiViewList} from "react-icons/ci";
-import {PiListChecksFill} from "react-icons/pi";
 import logo from "../assets/images/logo.png";
-import {IoIosPerson} from "react-icons/io";
-import {Home, ChevronRight, ChevronDown} from "lucide-react";
-import {MdLanguage} from "react-icons/md";
-import {FaList} from "react-icons/fa6";
-import {LuNotebookText} from "react-icons/lu";
-import {MdOutlinePostAdd} from "react-icons/md";
-import {CgProfile} from "react-icons/cg";
-// import { jwtDecode } from "jwt-decode";
+
+import { ChevronRight, ChevronDown} from "lucide-react";
+
 import {BsBuildingX} from "react-icons/bs";
-import {RiGraduationCapFill} from "react-icons/ri";
-import {RiUserReceived2Fill} from "react-icons/ri";
 import {jwtDecode} from "jwt-decode";
 
 function Sidebar({isOpen}) {
-    // const token = JSON.parse(localStorage.getItem("token"));
-
-    // const decoded = jwtDecode(token.access_token);
-    // // const userRole = decoded?.roles[0];
-    // console.log(decoded?.roles[0]);
-    // console.log(decoded);
     const location = useLocation();
     const [expandedCategories, setExpandedCategories] = useState(["/"]);
 
@@ -89,6 +73,13 @@ function Sidebar({isOpen}) {
                 items: [
                     {icon: BsBuildingX, label: "Fanlar", path: "/by-teacher-subject"},
                 ],
+            },
+        ];
+    } else if (userRole === "student") {
+        menuCategories = [
+            {
+                id: "quiz",
+                items: [{icon: BsBuildingX, label: "Quizlar", path: "/list-quiz"}],
             },
         ];
     }

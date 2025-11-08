@@ -20,7 +20,7 @@ const isTokenExpired = (token) => {
 
 axiosTest.interceptors.request.use((config) => {
     const token = JSON.parse(localStorage.getItem("token"));
-    console.log(token);
+
     if (token?.access_token) {
         if (isTokenExpired(token?.access_token)) {
             localStorage.removeItem("token");

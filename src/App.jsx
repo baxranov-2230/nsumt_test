@@ -39,6 +39,7 @@ import CreateQuestionExcel from "./pages/Quetion/CreateQuestionExcel.jsx";
 import ListSubjectByTeacher from "./pages/Subject/ListSubjectByTeacher.jsx";
 import ListQuiz from "./pages/Quiz/ListQuiz.jsx";
 import CreateQuiz from "./pages/Quiz/CreateQuiz.jsx";
+import QuizStartPage from "./pages/StudentQuestion/QuizStartPage.jsx";
 
 function ProtectedRoute({children}) {
     const token = JSON.parse(localStorage.getItem("token"));
@@ -295,6 +296,15 @@ function App() {
                             element={
                                 <ProtectedRoute>
                                     <ListQuiz/>
+                                </ProtectedRoute>
+                            }
+                        />
+
+                        <Route
+                            path="/quiz-start/:quiz_id/:quiz_pin"
+                            element={
+                                <ProtectedRoute>
+                                    <QuizStartPage/>
                                 </ProtectedRoute>
                             }
                         />

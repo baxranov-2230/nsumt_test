@@ -51,3 +51,32 @@ export const CreateQuizApi = async (quizData) => {
         throw new Error(error.response.data.detail);
     }
 };
+
+export const startQuizApi = async ({quiz_id, quiz_pin}) => {
+    try {
+        const params = new URLSearchParams();
+        params.append("quiz_id", quiz_id);
+        params.append("quiz_pin", quiz_pin);
+
+        const response = await axiosInstance.get(
+            `/quiz_process/start?${params.toString()}`
+        );
+        return response.data;
+    } catch (error) {
+        if (error.response?.status === 404) {
+            return null;
+        }
+        throw error;
+    }
+};
+
+export const submitQuizApi = async (data) => {
+    console.log(data);
+    try {
+        const response = await axiosInstance.post("/quiz_process/end", data);
+        return response.data;
+    } catch (error) {
+        console.error("Submit error:", error);
+        throw error;
+    }
+};
