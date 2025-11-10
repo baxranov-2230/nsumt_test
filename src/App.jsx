@@ -40,6 +40,7 @@ import ListSubjectByTeacher from "./pages/Subject/ListSubjectByTeacher.jsx";
 import ListQuiz from "./pages/Quiz/ListQuiz.jsx";
 import CreateQuiz from "./pages/Quiz/CreateQuiz.jsx";
 import QuizStartPage from "./pages/StudentQuestion/QuizStartPage.jsx";
+import Profile from "./pages/Profile.jsx";
 
 function ProtectedRoute({children}) {
     const token = JSON.parse(localStorage.getItem("token"));
@@ -182,7 +183,7 @@ function App() {
                         <Route path="/" element={<LoginPage/>}/>
                         <Route path="/login" element={<LoginPage/>}/>
 
-                        <Route path="/dashboard" element={<Dashboard/>}/>
+                        <Route path="/profile" element={<Profile/>}/>
                         <Route
                             path="/register-teacher"
                             element={

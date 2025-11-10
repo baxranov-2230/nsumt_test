@@ -39,7 +39,7 @@ export default function LoginPage() {
 
     useEffect(() => {
         if (isSuccess) {
-            navigate("/dashboard");
+            navigate("/profile");
             window.location.reload();
         }
     }, [navigate, isSuccess]);

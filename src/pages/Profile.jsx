@@ -1,41 +1,50 @@
-import React, {useState, useRef, useEffect} from "react";
+import React, {useState, useRef} from "react";
 import {Camera} from "lucide-react";
 import {useQuery} from "@tanstack/react-query";
-import {GetPassportApi} from "../Api/UserApi.jsx";
-import {useNavigate} from "react-router-dom";
-// import {UserMe} from "../Api/UserApi.jsx";
-const API_URL = import.meta.env.VITE_API_URL;
+import {UserMe} from "../Api/UserApi.jsx";
 
 function Profile() {
-
+    const [profileImage, setProfileImage] = useState(null);
     const fileInputRef = useRef(null);
-    const navigate = useNavigate();
 
-    const {isError, isSuccess, isLoading, data: user, error, isFetched, refetch} = useQuery({
+    const {isError, isSuccess, isLoading, data: student, error, refetch} = useQuery({
         queryKey: ['userMe'],
-        queryFn: GetPassportApi,
+        queryFn: UserMe,
     })
 
-
-    useEffect(() => {
-        // Faqat so‘rov tugaganidan so‘ng ishga tushadi
-        if (!isLoading && isFetched) {
-            if (isError || !user?.first_name) {
-                navigate("/passport");
-            } else {
-                navigate("/profile");
-            }
-        }
-    }, [isLoading, isFetched, isError, user, navigate]);
-
-
-
-
+    const studentInfo = {
+        personal: {
+            fullName: "Eshmatov Toshmat",
+            birthDate: "1999-05-15",
+            passport: "AA1234567",
+            phone: "+998 90 123 45 67",
+            email: "john.smith@example.com",
+            address: "Toshkent sh., Chilonzor t., 15-uy",
+        },
+        academic: {
+            faculty: "Kompyuter injiniringi fakulteti",
+            direction: "Dasturiy injiniring",
+            group: "318-21",
+            course: 2,
+            type: "To'lov-kontrakt",
+            status: "Aktiv",
+        },
+    };
 
     const handleImageClick = () => {
         fileInputRef.current.click();
     };
 
+    const handleImageChange = (event) => {
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                setProfileImage(reader.result);
+            };
+            reader.readAsDataURL(file);
+        }
+    };
 
     return (
         <div className="space-y-6">
@@ -48,9 +57,9 @@ function Profile() {
                             className="w-32 h-32 rounded-lg bg-gray-200 flex items-center justify-center overflow-hidden cursor-pointer"
                             onClick={handleImageClick}
                         >
-                            {user?.image_path ? (
+                            {student?.student?.image_path ? (
                                 <img
-                                    src={`${API_URL}/${user?.image_path}`}
+                                    src={student?.student?.image_path}
                                     alt="Profile"
                                     className="w-full h-full object-cover"
                                 />
@@ -58,30 +67,42 @@ function Profile() {
                                 <span className="text-3xl font-bold text-gray-400">ET</span>
                             )}
                         </div>
-
+                        {/*<button*/}
+                        {/*  className="absolute bottom-2 right-2 bg-white rounded-full p-1.5 shadow-lg"*/}
+                        {/*  onClick={handleImageClick}*/}
+                        {/*>*/}
+                        {/*  <Camera className="h-4 w-4 text-gray-600" />*/}
+                        {/*</button>*/}
+                        {/*<input*/}
+                        {/*  type="file"*/}
+                        {/*  ref={fileInputRef}*/}
+                        {/*  className="hidden"*/}
+                        {/*  accept="image/*"*/}
+                        {/*  onChange={handleImageChange}*/}
+                        {/*/>*/}
                     </div>
 
                     <div className="flex-1">
                         <h3 className="text-xl font-semibold text-gray-800 mb-4">
-                            {/*{student?.full_name}*/}
+                            {student?.student?.full_name}
                         </h3>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div>
-                                <p className="text-sm text-gray-500">F.I.O.</p>
-                                <p className="font-medium">{user?.first_name + " " + user?.last_name + " " + user?.third_name}</p>
+                                <p className="text-sm text-gray-500">Fakultet</p>
+                                <p className="font-medium">{student?.student?.faculty}</p>
                             </div>
                             <div>
-                                <p className="text-sm text-gray-500">Jinsi</p>
-                                <p className="font-medium">{user?.gender}</p>
+                                <p className="text-sm text-gray-500">Yo'nalish</p>
+                                <p className="font-medium">{student?.student?.specialty}</p>
                             </div>
                             <div>
-                                <p className="text-sm text-gray-500">Yashash viloyati</p>
-                                <p className="font-medium">{user?.region + " " + user?.district}</p>
+                                <p className="text-sm text-gray-500">Guruh</p>
+                                <p className="font-medium">{student?.student?.group}</p>
                             </div>
                             <div>
-                                <p className="text-sm text-gray-500">Manzili</p>
+                                <p className="text-sm text-gray-500">Kurs</p>
                                 <p className="font-medium">
-                                    {user?.address}
+                                    {student?.student?.level}
                                 </p>
                             </div>
                         </div>
@@ -96,55 +117,55 @@ function Profile() {
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div>
                                 <p className="text-sm text-gray-500">Tug'ilgan sana</p>
-                                <p className="font-medium">{user?.date_of_birth}</p>
+                                <p className="font-medium">{student?.student?.birth_date}</p>
+                            </div>
+                            {/*<div>*/}
+                            {/*    <p className="text-sm text-gray-500">Passport</p>*/}
+                            {/*    <p className="font-medium">{student?.passport_number}</p>*/}
+                            {/*</div>*/}
+                            <div>
+                                <p className="text-sm text-gray-500">Telefon</p>
+                                <p className="font-medium">{student?.student?.phone}</p>
                             </div>
                             <div>
-                                <p className="text-sm text-gray-500">Passport</p>
-                                <p className="font-medium">{user?.passport_series_number}</p>
-                            </div>
-                            <div>
-                                <p className="text-sm text-gray-500">Passport amal qilish muddati</p>
-                                <p className="font-medium">{user?.passport_expire_date}</p>
-                            </div>
-                            <div>
-                                <p className="text-sm text-gray-500">JSHIR</p>
-                                <p className="font-medium">{user?.jshshir}</p>
+                                <p className="text-sm text-gray-500">Talaba ID raqami</p>
+                                <p className="font-medium">{student?.student?.student_id_number}</p>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                {/*<div className="border-t">*/}
-                {/*    <div className="p-6">*/}
-                {/*        <h4 className="text-lg font-semibold text-gray-800 mb-4">*/}
-                {/*            O'qish ma'lumotlari*/}
-                {/*        </h4>*/}
-                {/*        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">*/}
-                {/*            <div>*/}
-                {/*                <p className="text-sm text-gray-500">O'qish turi</p>*/}
-                {/*                /!*<p className="font-medium">{student?.paymentForm}</p>*!/*/}
-                {/*            </div>*/}
-                {/*            <div>*/}
-                {/*                <p className="text-sm text-gray-500">Holati</p>*/}
-                {/*                <span*/}
-                {/*                    className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">*/}
-                {/*  /!*{student?.studentStatus}*!/*/}
-                {/*</span>*/}
-                {/*            </div>*/}
-                {/*        </div>*/}
-                {/*        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">*/}
-                {/*            <div>*/}
-                {/*                <p className="text-sm text-gray-500">Ta'lim shakli</p>*/}
-                {/*                /!*<p className="font-medium">{student?.educationForm}</p>*!/*/}
-                {/*            </div>*/}
-                {/*            <div>*/}
-                {/*                <p className="text-sm text-gray-500">Ta'lim turi</p>*/}
-                {/*                /!*<p className="font-medium">{student?.educationType}</p>*!/*/}
-                {/*            </div>*/}
+                <div className="border-t">
+                    <div className="p-6">
+                        <h4 className="text-lg font-semibold text-gray-800 mb-4">
+                            O'qish ma'lumotlari
+                        </h4>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <p className="text-sm text-gray-500">O'qish turi</p>
+                                <p className="font-medium">{student?.student?.paymentForm}</p>
+                            </div>
+                            <div>
+                                <p className="text-sm text-gray-500">Holati</p>
+                                <span
+                                    className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                  {student?.student?.studentStatus}
+                </span>
+                            </div>
+                        </div>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+                            <div>
+                                <p className="text-sm text-gray-500">Ta'lim shakli</p>
+                                <p className="font-medium">{student?.student?.educationForm}</p>
+                            </div>
+                            <div>
+                                <p className="text-sm text-gray-500">Ta'lim turi</p>
+                                <p className="font-medium">{student?.student?.educationType}</p>
+                            </div>
 
-                {/*        </div>*/}
-                {/*    </div>*/}
-                {/*</div>*/}
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     );
