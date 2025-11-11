@@ -80,3 +80,10 @@ export const submitQuizApi = async (data) => {
         throw error;
     }
 };
+
+export const ToggleActiveQuizApi = async ({ quiz_id, active }) => {
+    const response = await axiosInstance.put("/quiz/toggle_active", null, {
+        params: { quiz_id, active },
+    });
+    return response.data;
+};

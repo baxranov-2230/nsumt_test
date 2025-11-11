@@ -1,17 +1,18 @@
-
-import React, { useState, useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
-import { useQuery } from "@tanstack/react-query";
-import { startQuizApi, submitQuizApi } from "../../Api/QuizApi.jsx";
+import React, {useState, useEffect, useCallback} from "react";
+import {useParams, useNavigate} from "react-router-dom";
+import {useQuery} from "@tanstack/react-query";
+import {startQuizApi, submitQuizApi} from "../../Api/QuizApi.jsx";
 
 function QuizStart() {
-    const { quiz_id, quiz_pin } = useParams();
+    const {quiz_id, quiz_pin} = useParams();
     const navigate = useNavigate();
 
     const [current, setCurrent] = useState(0);
     const [answers, setAnswers] = useState([]);
     const [result, setResult] = useState(null);
     const [timeLeft, setTimeLeft] = useState(0);
+    const [timeUpModal, setTimeUpModal] = useState(false);
+
 
     const {
         data: quizData,
@@ -19,48 +20,14 @@ function QuizStart() {
         isError,
     } = useQuery({
         queryKey: ["startQuiz", quiz_id, quiz_pin],
-        queryFn: () => startQuizApi({ quiz_id, quiz_pin }),
+        queryFn: () => startQuizApi({quiz_id, quiz_pin}),
         enabled: !!quiz_id && !!quiz_pin,
         staleTime: Infinity, // Ma'lumotlar eskirmaydi
         cacheTime: 1000 * 60 * 60, // 1 soat keshda saqlanadi
         onSuccess: (data) => {
-            if (data.duration) setTimeLeft(data.duration * 60);
+            // if (data.duration) setTimeLeft(data.duration * 60);
         },
     });
-
-    useEffect(() => {
-        if (!timeLeft) return;
-        const interval = setInterval(() => {
-            setTimeLeft((t) => {
-                if (t <= 1) {
-                    clearInterval(interval);
-                    finishQuiz();
-                }
-                return t - 1;
-            });
-        }, 1000);
-        return () => clearInterval(interval);
-    }, [timeLeft]);
-
-    if (isLoading) return <div>Yuklanmoqda...</div>;
-    if (isError || !quizData) return <div className="text-red-600">Test topilmadi</div>;
-
-    const questions = quizData.questions || [];
-    const currentQuestion = questions[current];
-    const isHtml = currentQuestion.text.includes("<");
-
-    const handleAnswer = (option) => {
-        setAnswers((prev) => {
-            const exists = prev.find((a) => a.id === currentQuestion.id);
-            if (exists) {
-                return prev.map((a) =>
-                    a.id === currentQuestion.id ? { ...a, option } : a
-                );
-            }
-            return [...prev, { id: currentQuestion.id, option }];
-        });
-    };
-
     const finishQuiz = async () => {
         const payload = {
             quiz_id: Number(quiz_id),
@@ -75,11 +42,96 @@ function QuizStart() {
         }
     };
 
+    useEffect(() => {
+        if (!quizData?.duration) return;
+
+        const totalSeconds = quizData.duration*60;
+        setTimeLeft(totalSeconds);
+
+        const interval = setInterval(() => {
+            setTimeLeft(prev => {
+                if (prev <= 1) {
+                    clearInterval(interval);
+                    setTimeUpModal(true);   // ⬅ faqat modal ochiladi
+                    return 0;
+                }
+                return prev - 1;
+            });
+        }, 1000);
+
+        return () => clearInterval(interval);
+    }, [quizData?.duration]);
+
+
+    // useEffect(() => {
+    //     if (!quizData?.duration) return;
+    //
+    //     // Backenddan kelgan vaqtni o‘rnatamiz
+    //     const totalSeconds = quizData.duration;
+    //     setTimeLeft(totalSeconds);
+    //
+    //     const interval = setInterval(() => {
+    //         setTimeLeft((prev) => {
+    //             if (prev <= 1) {
+    //                 clearInterval(interval);
+    //                 finishQuiz();
+    //                 return 0;
+    //             }
+    //             return prev - 1;
+    //         });
+    //     }, 1000);
+    //
+    //     return () => clearInterval(interval);
+    //
+    // }, [quizData?.duration]);
+
+
     const formatTime = () => {
         const m = Math.floor(timeLeft / 60);
         const s = timeLeft % 60;
         return `${String(m).padStart(2, "0")}:${String(s).padStart(2, "0")}`;
     };
+
+
+    // useEffect(() => {
+    //     if (!timeLeft) return;
+    //     const interval = setInterval(() => {
+    //         setTimeLeft((t) => {
+    //             if (t <= 1) {
+    //                 clearInterval(interval);
+    //                 finishQuiz();
+    //             }
+    //             return t - 1;
+    //         });
+    //     }, 1000);
+    //     return () => clearInterval(interval);
+    // }, [timeLeft]);
+
+    if (isLoading) return <div>Yuklanmoqda...</div>;
+    if (isError || !quizData) return <div className="text-red-600">Test topilmadi</div>;
+
+    const questions = quizData.questions || [];
+    const currentQuestion = questions[current];
+    const isHtml = currentQuestion.text.includes("<");
+
+    const handleAnswer = (option) => {
+        setAnswers((prev) => {
+            const exists = prev.find((a) => a.id === currentQuestion.id);
+            if (exists) {
+                return prev.map((a) =>
+                    a.id === currentQuestion.id ? {...a, option} : a
+                );
+            }
+            return [...prev, {id: currentQuestion.id, option}];
+        });
+    };
+
+
+    // const formatTime = () => {
+    //     const m = Math.floor(timeLeft / 60);
+    //     const s = timeLeft % 60;
+    //     return `${String(m).padStart(2, "0")}:${String(s).padStart(2, "0")}`;
+    // };
 
     return (
         <div className="flex max-w-5xl mx-auto mt-6 gap-4">
@@ -121,6 +173,7 @@ function QuizStart() {
                     <h3 className="text-md font-bold">Qolgan vaqt:</h3>
                     <p className="text-2xl font-mono">{formatTime()}</p>
                 </div>
+
             </div>
 
             {/* RIGHT SIDE — ACTIVE QUESTION */}
@@ -130,7 +183,7 @@ function QuizStart() {
                 </h2>
 
                 {isHtml ? (
-                    <div dangerouslySetInnerHTML={{ __html: currentQuestion.text }} />
+                    <div dangerouslySetInnerHTML={{__html: currentQuestion.text}}/>
                 ) : (
                     <p className="text-lg">{currentQuestion.text}</p>
                 )}
@@ -147,7 +200,7 @@ function QuizStart() {
                                 onClick={() => handleAnswer(opt)}
                                 className={`w-full text-left p-4 rounded-lg shadow transition
                                     ${isActive ? "bg-blue-600 text-white" : "bg-gray-100 hover:bg-gray-200"}`}
-                                dangerouslySetInnerHTML={{ __html: opt }}
+                                dangerouslySetInnerHTML={{__html: opt}}
                             />
                         );
                     })}
@@ -171,6 +224,28 @@ function QuizStart() {
                     </button>
                 </div>
             </div>
+
+            {timeUpModal && (
+                <div className="fixed inset-0 bg-black bg-opacity-40 flex justify-center items-center">
+                    <div className="bg-white p-6 rounded-lg w-96 shadow-lg space-y-4">
+                        <h2 className="text-xl font-bold text-center text-red-600">
+                            Vaqt tugadi!
+                        </h2>
+
+                        <p className="text-center">
+                            Testni yakunlash uchun tugmani bosing.
+                        </p>
+
+                        <button
+                            onClick={finishQuiz}
+                            className="w-full px-4 py-2 bg-blue-600 text-white rounded"
+                        >
+                            Yakunlash
+                        </button>
+                    </div>
+                </div>
+            )}
+
 
             {/* RESULT MODAL */}
             {result && (
