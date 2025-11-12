@@ -152,6 +152,10 @@ function ListQuiz() {
                             <th className="p-3 text-gray-600">O'qituvchi</th>
                             <th className="p-3 text-gray-600">Fan</th>
                             <th className="p-3 text-gray-600">Guruh</th>
+                            {role === "admin" && (
+                                <th className="p-3 text-gray-600">Quiz kodi</th>
+                            )}
+
                             <th className="p-3 text-gray-600">Boshlanish vaqti</th>
                             <th className="p-3 text-center text-gray-600">Amallar</th>
                         </tr>
@@ -166,6 +170,10 @@ function ListQuiz() {
                                 </td>
                                 <td className="p-3">{quiz?.subject_name}</td>
                                 <td className="p-3">{quiz?.group_name}</td>
+                                {role === "admin" && (
+                                    <td className="p-3">{quiz?.quiz_pin}</td>
+                                )}
+
                                 <td className="p-3">
                                     {quiz?.start_time?.split("T")[0] || "-"}
                                 </td>
