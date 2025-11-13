@@ -86,6 +86,8 @@ export const detailTeacherApi = async (teacherId) => {
   console.log(response.data);
   return response.data;
 };
+
+
 // export const UpdateSubjectApi = async (subjectData) => {
 //     const response = await axiosOrganization.put(
 //         `/subjects/update/${subjectData?.subjectId}`,

@@ -62,50 +62,11 @@ function QuizStart() {
         return () => clearInterval(interval);
     }, [quizData?.duration]);
 
-
-    // useEffect(() => {
-    //     if (!quizData?.duration) return;
-    //
-    //     // Backenddan kelgan vaqtni o‘rnatamiz
-    //     const totalSeconds = quizData.duration;
-    //     setTimeLeft(totalSeconds);
-    //
-    //     const interval = setInterval(() => {
-    //         setTimeLeft((prev) => {
-    //             if (prev <= 1) {
-    //                 clearInterval(interval);
-    //                 finishQuiz();
-    //                 return 0;
-    //             }
-    //             return prev - 1;
-    //         });
-    //     }, 1000);
-    //
-    //     return () => clearInterval(interval);
-    //
-    // }, [quizData?.duration]);
-
-
     const formatTime = () => {
         const m = Math.floor(timeLeft / 60);
         const s = timeLeft % 60;
         return `${String(m).padStart(2, "0")}:${String(s).padStart(2, "0")}`;
     };
-
-
-    // useEffect(() => {
-    //     if (!timeLeft) return;
-    //     const interval = setInterval(() => {
-    //         setTimeLeft((t) => {
-    //             if (t <= 1) {
-    //                 clearInterval(interval);
-    //                 finishQuiz();
-    //             }
-    //             return t - 1;
-    //         });
-    //     }, 1000);
-    //     return () => clearInterval(interval);
-    // }, [timeLeft]);
 
     if (isLoading) return <div>Yuklanmoqda...</div>;
     if (isError || !quizData) return <div className="text-red-600">Test topilmadi</div>;
