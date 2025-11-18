@@ -60,10 +60,10 @@ function ResultListByField() {
                         <tr key={item?.student?.id} className="border-t hover:bg-gray-50">
                             <td className="p-3">{index + 1}</td>
                             <td className="p-3">
-                                {item?.student?.first_name} {item?.student?.last_name} {item?.student?.third_name}
+                                {item?.student?.student?.full_name}
                             </td>
                             <td className="p-3">{item?.subject?.name}</td>
-                            <td className="p-3">{item?.result?.grade}</td>
+                            <td className="p-3">{item?.grade}</td>
                             {/*<td className="p-3">{item?.percent}%</td>*/}
                         </tr>
                     ))}
