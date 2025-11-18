@@ -565,13 +565,14 @@ function ListQuiz() {
                                                 <MdDelete/>
                                             </button>
                                         )}
-
+                                        {role === "admin" && (
                                             <button
                                                 className="bg-blue-500 text-white px-3 py-1 rounded"
                                                 onClick={() => handleOpenResult(quiz?.quiz_id)}
                                             >
                                                 Ko‘rish
                                             </button>
+                                        )}
 
 
                                         {role === "admin" && (
