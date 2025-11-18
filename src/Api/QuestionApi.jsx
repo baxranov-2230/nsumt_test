@@ -4,79 +4,98 @@ import axiosOrganization from "./axiosOrganization.jsx";
 const API_URL = import.meta.env.VITE_TEST_API_URL;
 
 export const CreateQuestionApi = async (questionData) => {
-  try {
-    const formData = new FormData();
-    formData.append("text", questionData.text || "");
-    formData.append("option_a", questionData.option_a || "");
-    formData.append("option_b", questionData.option_b || "");
-    formData.append("option_c", questionData.option_c || "");
-    formData.append("option_d", questionData.option_d || "");
-    formData.append("subject_id", questionData.subjectId || "");
+    try {
+        const formData = new FormData();
+        formData.append("text", questionData.text || "");
+        formData.append("option_a", questionData.option_a || "");
+        formData.append("option_b", questionData.option_b || "");
+        formData.append("option_c", questionData.option_c || "");
+        formData.append("option_d", questionData.option_d || "");
+        formData.append("subject_id", questionData.subjectId || "");
 
-    console.log(formData);
-    const response = await axiosInstance.post(`/questions/create`, formData);
-    console.log("Serverdan kelgan javob:", response.data);
-    return await response.data;
-  } catch (error) {
-    if (error.response && error.response.data.message) {
-      throw new Error(error.response.data.message);
+        console.log(formData);
+        const response = await axiosInstance.post(`/questions/create`, formData);
+        console.log("Serverdan kelgan javob:", response.data);
+        return await response.data;
+    } catch (error) {
+        if (error.response && error.response.data.message) {
+            throw new Error(error.response.data.message);
+        }
+        throw new Error(error.response.data.detail);
     }
-    throw new Error(error.response.data.detail);
-  }
 };
 
 export const GetAllQuestionApi = async ({
-                                         limit = 20,
-                                         offset = 0,
-                                       }) => {
-  try {
-    const params = new URLSearchParams();
-    params.append("limit", limit);
-    params.append("offset", offset);
+                                            limit = 20,
+                                            offset = 0,
+                                        }) => {
+    try {
+        const params = new URLSearchParams();
+        params.append("limit", limit);
+        params.append("offset", offset);
 
-    const response = await axiosInstance.get(
-        `/questions?${params.toString()}`
-    );
-    return response.data;
-  } catch (error) {
-    if (error.response?.status === 404) {
-      return null;
+        const response = await axiosInstance.get(
+            `/questions?${params.toString()}`
+        );
+        return response.data;
+    } catch (error) {
+        if (error.response?.status === 404) {
+            return null;
+        }
+        throw error;
     }
-    throw error;
-  }
 };
 
 
 export const DeleteQuestionApi = async (questionId) => {
-  const response = await axiosInstance.delete(
-    `/questions/delete/${questionId}`
-  );
-  return response.data;
+    const response = await axiosInstance.delete(
+        `/questions/delete/${questionId}`
+    );
+    return response.data;
 };
 
 export const CreateQuestionExcelApi = async (questionData) => {
-  try {
-    const formData = new FormData();
-    formData.append("subject_id", questionData.subject_id || "");
-    if (questionData.file) {
-      formData.append("file", questionData.file);
+    try {
+        const formData = new FormData();
+        formData.append("subject_id", questionData.subject_id || "");
+        if (questionData.file) {
+            formData.append("file", questionData.file);
+        }
+        // console.log(formData)
+        const response = await axiosInstance.post(
+            `/questions/create/excel?subject_id=${questionData.subject_id}`,
+            formData,
+            {
+                headers: {
+                    "Content-Type": "multipart/form-data", // Fayl yuborish uchun zarur sarlavha
+                },
+            }
+        );
+        console.log("Serverdan kelgan javob:", response.data);
+        return await response.data;
+    } catch (error) {
+        if (error.response && error.response.data.message) {
+            throw new Error(error.response.data.message);
+        }
+        throw new Error(error.response.data.detail);
     }
-    // console.log(formData)
-    const response = await axiosInstance.post(
-      `/questions/create/excel?subject_id=${questionData.subject_id}`,
-      formData,
-      {
-        headers: {
-          "Content-Type": "multipart/form-data", // Fayl yuborish uchun zarur sarlavha
-        },
-      }
+};
+
+export const detailQuestionApi = async (questionId) => {
+    const response = await axiosInstance.get(`/questions/get/${questionId}`);
+    return response.data;
+};
+
+export const UpdateQuestionApi = async (questionData) => {
+    const response = await axiosInstance.put(
+        `/questions/update/${questionData?.questionId}`,
+        {
+            text: questionData.text,
+            option_a: questionData.option_a,
+            option_b: questionData.option_b,
+            option_c: questionData.option_c,
+            option_d: questionData.option_d
+        }
     );
-    console.log("Serverdan kelgan javob:", response.data);
-    return await response.data;
-  } catch (error) {
-    if (error.response && error.response.data.message) {
-      throw new Error(error.response.data.message);
-    }
-    throw new Error(error.response.data.detail);
-  }
+    return response.data;
 };
