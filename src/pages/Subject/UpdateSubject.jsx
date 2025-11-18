@@ -54,60 +54,7 @@ function UpdateSubject() {
       navigate("/list-subject");
     }
   }, [navigate, isSuccess]);
-// 🔹 Jodit sozlamalari
-  const config = useMemo(
-      () => ({
-        readonly: false,
-        height: 300,
-        toolbarButtonSize: "middle",
-        style: {
-          table: {
-            border: "1px solid #ccc",
-            "border-collapse": "collapse",
-          },
-          "td, th": {
-            border: "1px solid #ccc",
-            padding: "5px",
-          },
-        },
-        uploader: {
-          url: `${API_URL}/quiz/upload`,
-          insertImageAsBase64URI: false,
-          imagesExtensions: ["jpg", "png", "jpeg", "gif"],
-          method: "POST",
-          format: "json",
-          prepareData: function (formData) {
-            const file = formData.get("files[0]");
-            formData.delete("files[0]");
-            formData.append("file", file);
-            return formData;
-          },
-          isSuccess: function (resp) {
-            return resp.file_url !== undefined;
-          },
-          process: function (resp) {
-            if (resp.file_url) {
-              return { files: [resp.file_url] };
-            }
-            return { files: [] };
-          },
-          defaultHandlerSuccess: function (data) {
-            if (data.files && data.files[0]) {
-              const fileUrl = data.files[0];
-              const ext = fileUrl.split(".").pop().toLowerCase();
-              let html = "";
-              if (["jpg", "jpeg", "png", "gif"].includes(ext)) {
-                html = `<img src="${fileUrl}" alt="image" style="max-width:100%">`;
-              } else {
-                html = `<a href="${fileUrl}" target="_blank">Faylni ochish</a>`;
-              }
-              this.s.insertHTML(html);
-            }
-          },
-        },
-      }),
-      []
-  );
+
   return (
     <div className="space-y-6">
       <h2 className="text-2xl font-bold text-gray-800">Fanni o'zgartirish</h2>
