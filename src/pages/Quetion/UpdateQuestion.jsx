@@ -138,7 +138,7 @@ function UpdateQuestion() {
 
                         <div className="w-full">
                             <label htmlFor="text" className="text-xl mb-2 mt-7">
-                                Post uzbekcha matnini kiriting
+                                Savol textini kiriting
                             </label>
                             <JoditEditor
                                 ref={editorRef}
@@ -152,7 +152,7 @@ function UpdateQuestion() {
                         </div>
                         <div className="w-full">
                             <label htmlFor="option_a" className="text-xl mb-2 mt-7">
-                                Post uzbekcha matnini kiriting
+                                A variant  matnini kiriting
                             </label>
                             <JoditEditor
                                 ref={editorRef}
@@ -166,7 +166,7 @@ function UpdateQuestion() {
                         </div>
                         <div className="w-full">
                             <label htmlFor="option_b" className="text-xl mb-2 mt-7">
-                                Post uzbekcha matnini kiriting
+                                B variant  matnini kiriting
                             </label>
                             <JoditEditor
                                 ref={editorRef}
@@ -180,7 +180,7 @@ function UpdateQuestion() {
                         </div>
                         <div className="w-full">
                             <label htmlFor="option_c" className="text-xl mb-2 mt-7">
-                                Post uzbekcha matnini kiriting
+                                C variant  matnini kiriting
                             </label>
                             <JoditEditor
                                 ref={editorRef}
@@ -194,7 +194,7 @@ function UpdateQuestion() {
                         </div>
                         <div className="w-full">
                             <label htmlFor="option_d" className="text-xl mb-2 mt-7">
-                                Post uzbekcha matnini kiriting
+                                D variant  matnini kiriting
                             </label>
                             <JoditEditor
                                 ref={editorRef}
