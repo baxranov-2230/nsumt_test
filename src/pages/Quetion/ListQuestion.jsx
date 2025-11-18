@@ -122,14 +122,14 @@ function ListQuestion() {
                                     {/*<td className="p-3">{category?.category_name_en}</td>*/}
                                     <td className="p-3">
                                         <div className="flex justify-center">
-                                            {/* <Link
-                          className=" flex items-center justify-start   pr-8"
-                          to={`/update-subject/${employee?.id}`}
-                        >
-                          <button>
-                            <FaRegEdit className="text-2xl text-[#3697A5]" />
-                          </button>
-                        </Link> */}
+                                            <Link
+                                                className=" flex items-center justify-start   pr-8"
+                                                to={`/update-question/${question?.id}`}
+                                            >
+                                                <button>
+                                                    <FaRegEdit className="text-2xl text-[#3697A5]"/>
+                                                </button>
+                                            </Link>
                                             <button
                                                 className="flex items-center justify-start  "
                                                 // onClick={() => deleteHandler(faculty?.id)}

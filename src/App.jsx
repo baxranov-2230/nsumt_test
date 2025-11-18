@@ -41,6 +41,8 @@ import ListQuiz from "./pages/Quiz/ListQuiz.jsx";
 import CreateQuiz from "./pages/Quiz/CreateQuiz.jsx";
 import QuizStartPage from "./pages/StudentQuestion/QuizStartPage.jsx";
 import Profile from "./pages/Profile.jsx";
+import ResultByQuiz from "./pages/Result/ResultByQuiz.jsx";
+import UpdateQuestion from "./pages/Quetion/UpdateQuestion.jsx";
 
 function ProtectedRoute({children}) {
     const token = JSON.parse(localStorage.getItem("token"));
@@ -306,6 +308,23 @@ function App() {
                             element={
                                 <ProtectedRoute>
                                     <QuizStartPage/>
+                                </ProtectedRoute>
+                            }
+                        />
+                        <Route
+                            path="/quiz-result/:quiz_id"
+                            element={
+                                <ProtectedRoute>
+                                    <ResultByQuiz/>
+                                </ProtectedRoute>
+                            }
+                        />
+
+                        <Route
+                            path="/update-question/:questionId"
+                            element={
+                                <ProtectedRoute>
+                                    <UpdateQuestion/>
                                 </ProtectedRoute>
                             }
                         />

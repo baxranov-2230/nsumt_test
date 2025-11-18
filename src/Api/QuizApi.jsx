@@ -4,11 +4,13 @@ import axiosOrganization from "./axiosOrganization.jsx";
 export const GetAllQuizApi = async ({
                                         limit = 20,
                                         offset = 0,
+                                        search = "",
                                     }) => {
     try {
         const params = new URLSearchParams();
         params.append("limit", limit);
         params.append("offset", offset);
+        if (search) params.append("search", search);
 
         const response = await axiosInstance.get(
             `/quiz?${params.toString()}`
@@ -81,9 +83,9 @@ export const submitQuizApi = async (data) => {
     }
 };
 
-export const ToggleActiveQuizApi = async ({ quiz_id, active }) => {
+export const ToggleActiveQuizApi = async ({quiz_id, active}) => {
     const response = await axiosInstance.put("/quiz/toggle_active", null, {
-        params: { quiz_id, active },
+        params: {quiz_id, active},
     });
     return response.data;
 };
